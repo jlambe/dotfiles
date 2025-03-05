@@ -1,0 +1,105 @@
+#+title: Configuration
+#+author: Julien Lambé
+#+email: julien@themosis.com
+#+startup: content indent
+
+This is my personal Emacs configuration. Feel free to explore!
+
+Like many Emacs users, I buil my configuration using "literate
+programming" and I leverage the =org-babel-tangle= function to compile this
+orgmode configuration into the required =.el= files.
+
+Emacs is XDG-compatible but if the `~/.emacs.d/' directory exists, it will take
+precedence over the =~/.config/emacs/= one.
+
+* Early init
+The =early-init.el= file is loaded before the package system and GUI is
+initialized.
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+#+end_src
+
+* Init
+The regular =init.el= file is read after the GUI is initialized.
+
+** Setup load paths
+Add the =~/.emacs.d/jie-emacs-lisp/= and =~/.emacs.d/jie-emacs-modules/=
+directories to Emacs ~load-path~. Emacs will then automatically include all the
+~.el~ files.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (mapc
+   (lambda (relative-path)
+     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
+   '("jie-emacs-lisp" "jie-emacs-modules"))
+#+end_src
+
+** Default startup buffer
+When opening Emacs, display the =*scratch*= buffer by default.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq initial-buffer-choice t)
+#+end_src
+
+** Default auto-fill column
+Set the =fill-column= variable value to =80=.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq fill-column 80)
+#+end_src
+
+** Load
+Start loading the modules.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (require 'jie-emacs-orgmode)
+  (require 'jie-emacs-theme)
+  (require 'jie-emacs-skeletons)
+#+end_src
+
+* Lisp
+** Common utilities
+These are common/shared emacs-lisp functions for usage in all the configuration
+files.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-lisp/jie-common.el" :mkdirp yes
+#+end_src
+
+* Modules
+** Theme
+Experimenting with `ef' themes beside core `modus' themes.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-theme.el" :mkdirp yes
+  (require 'ef-themes)
+  (load-theme 'ef-light :no-confirm)
+
+  (provide 'jie-emacs-theme)
+#+end_src
+
+** Org-mode
+Settings regarding the org-mode.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-orgmode.el"
+  ;;; Enable auto-fill-mode when working within an .org file.
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  
+  (provide 'jie-emacs-orgmode)
+#+end_src
+
+** Skeletons
+*** jie-skeleton-org-mode-code-block
+Generate an orgmode code block structure where you can specify the programming
+language as well as any additional headers.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-skeletons.el"
+  (define-skeleton jie-skeleton-org-mode-code-block
+    "A skeleton to generate an org-mode code block structure."
+    "Code language: "
+    "#+begin_src " str | "emacs-lisp" " " ("Header: " str)
+    \n
+    -
+    \n
+    "#+end_src")
+
+  (provide 'jie-emacs-skeletons)
+#+end_src
