@@ -65,7 +65,9 @@ Start loading the modules.
 
 #+begin_src emacs-lisp :tangle "init.el"
   (require 'jie-emacs-completion)
+  (require 'jie-emacs-editor)
   (require 'jie-emacs-orgmode)
+  (require 'jie-emacs-prog)
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
 #+end_src
@@ -79,6 +81,18 @@ files.
 #+end_src
 
 * Modules
+** Editor
+The editor file contains all tiny changes for the Emacs editor that
+don't fit in a specific category yet or are too small changes to
+allocate them a full configuration file...
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-editor.el" :mkdirp yes
+  ;;; Set tab-bar-show mode to hide if there is only one tab left
+  (setq tab-bar-show 1)
+
+  (provide 'jie-emacs-editor)
+#+end_src
+
 ** Theme
 Experimenting with `ef' themes beside core `modus' themes.
 
@@ -99,34 +113,65 @@ Settings regarding the org-mode.
   (provide 'jie-emacs-orgmode)
 #+end_src
 
+** Prog-mode
+Configuration file for anything related to programmation.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-prog.el"
+  ;;; Use relative line numbers while working on code files.
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (setq display-line-numbers 'relative)))
+
+  (provide 'jie-emacs-prog)
+#+end_src
+
 ** Completion
 **Orderless**
 The [[https://github.com/oantolin/orderless][orderless]] package provides enhanced fuzzy search during
 completion. The current configuration here is putting the "orderless"
 style up front.
 
-**vertico**
+**Vertico**
 The [[https://github.com/minad/vertico][vertico]] package changes the completion UI to list found results in
 a vertical list. By default, Emacs lists found terms in a multicolumn
 view, which makes it harder for me to parse. I personally prefer to
 view the results in a single column/list.
 
+**Corfu**
+The corfu package provides buffer completion at point UI. It can then
+be used to provide code suggestions while typing code or other text
+elements on major modes.
+
 #+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-completion.el"
-  ;;; Use the Oderless package to provide fuzzy find search style.
-  (use-package orderless
-    :ensure t
-    :custom (completion-styles '(orderless basic)))
+    ;;; Use the Oderless package to provide fuzzy find search style.
+    (use-package orderless
+      :ensure t
+      :custom (completion-styles '(orderless basic)))
 
-  ;;; Use the Vertico package to get vertical minibuffer UI.
-  (use-package vertico
-    :ensure t
-    :custom
-    (vertico-cycle t)
-    (vertico-count 4)
-    :init (vertico-mode))
+    ;;; Use the Vertico package to get vertical minibuffer UI.
+    (use-package vertico
+      :ensure t
+      :custom
+      (vertico-cycle t)
+      (vertico-count 4)
+      :init (vertico-mode))
 
-  (provide 'jie-emacs-completion)
+    ;;; Use the Corfu package for buffer completion UI
+    (use-package corfu
+      :ensure t
+      :custom
+      (corfu-cycle t)
+      :init
+      (global-corfu-mode))
+
+    (use-package emacs
+      :custom
+      ;; Enable indentation+completion using TAB key
+      (tab-always-indent 'complete))
+    
+    (provide 'jie-emacs-completion)
 #+end_src
+
 ** Skeletons
 *** jie-skeleton-org-mode-code-block
 Generate an orgmode code block structure where you can specify the programming
