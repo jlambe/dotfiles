@@ -34,6 +34,18 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
    '("jie-emacs-lisp" "jie-emacs-modules"))
 #+end_src
 
+** Repositories
+Emacs has by default the following repositories enabled:
+- GNU: [[https://elpa.gnu.org/packages/]]
+- Non GNU: [[https://elpa.nongnu.org/nongnu/]]
+
+The following code snippet is adding the [[https://melpa.org/][Melpa]] archive to the default
+list of repositories.
+
+#+begin_src emacs-lisp :tangle "init.el"
+    (dolist (package '(("melpa" . "https://melpa.org/packages/")))
+      (add-to-list 'package-archives package t))
+#+end_src
 ** Default startup buffer
 When opening Emacs, display the =*scratch*= buffer by default.
 
@@ -41,7 +53,7 @@ When opening Emacs, display the =*scratch*= buffer by default.
   (setq initial-buffer-choice t)
 #+end_src
 
-** Default auto-fill column
+** Auto-fill column
 Set the =fill-column= variable value to =80=.
 
 #+begin_src emacs-lisp :tangle "init.el"
@@ -52,6 +64,7 @@ Set the =fill-column= variable value to =80=.
 Start loading the modules.
 
 #+begin_src emacs-lisp :tangle "init.el"
+  (require 'jie-emacs-completion)
   (require 'jie-emacs-orgmode)
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
@@ -86,6 +99,34 @@ Settings regarding the org-mode.
   (provide 'jie-emacs-orgmode)
 #+end_src
 
+** Completion
+**Orderless**
+The [[https://github.com/oantolin/orderless][orderless]] package provides enhanced fuzzy search during
+completion. The current configuration here is putting the "orderless"
+style up front.
+
+**vertico**
+The [[https://github.com/minad/vertico][vertico]] package changes the completion UI to list found results in
+a vertical list. By default, Emacs lists found terms in a multicolumn
+view, which makes it harder for me to parse. I personally prefer to
+view the results in a single column/list.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-completion.el"
+  ;;; Use the Oderless package to provide fuzzy find search style.
+  (use-package orderless
+    :ensure t
+    :custom (completion-styles '(orderless basic)))
+
+  ;;; Use the Vertico package to get vertical minibuffer UI.
+  (use-package vertico
+    :ensure t
+    :custom
+    (vertico-cycle t)
+    (vertico-count 4)
+    :init (vertico-mode))
+
+  (provide 'jie-emacs-completion)
+#+end_src
 ** Skeletons
 *** jie-skeleton-org-mode-code-block
 Generate an orgmode code block structure where you can specify the programming
