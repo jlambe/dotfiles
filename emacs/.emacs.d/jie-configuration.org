@@ -90,6 +90,10 @@ allocate them a full configuration file...
   ;;; Set tab-bar-show mode to hide if there is only one tab left
   (setq tab-bar-show 1)
 
+  ;;; Navigation/View
+  ;;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
+  (setq scroll-margin 8)
+  
   (provide 'jie-emacs-editor)
 #+end_src
 
@@ -121,6 +125,20 @@ Configuration file for anything related to programmation.
   (add-hook 'prog-mode-hook
             (lambda ()
               (setq display-line-numbers 'relative)))
+
+  ;;; Modes
+  ;;;; Install php-mode
+  (defun jie-php-mode ()
+    "Personal php-mode init configuration."
+    (progn
+      (subword-mode 1)
+      (setq-local show-trailing-whitespace 1)))
+
+  (use-package php-mode
+    :ensure t
+    :config
+    (add-hook 'php-mode-hook #'jie-php-mode)
+    (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil 1))
 
   (provide 'jie-emacs-prog)
 #+end_src
