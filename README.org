@@ -1,0 +1,12 @@
+#+title: Dotfiles
+
+Personal dotfiles repository.
+
+* Tools
+- [[https://alacritty.org/][Alacritty]]
+- [[https://www.gnu.org/software/emacs/][Emacs]]
+- [[Https://neovim.io/][Neovim]]
+- [[https://github.com/tmux/tmux][Tmux]]
+
+* Deprecated
+- [[https://github.com/koekeishiya/yabai][Yabai/skhd]]
