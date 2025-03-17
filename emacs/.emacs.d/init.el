@@ -6,9 +6,15 @@
 (dolist (package '(("melpa" . "https://melpa.org/packages/")))
   (add-to-list 'package-archives package t))
 
+(use-package quelpa
+  :ensure t)
+
 (setq initial-buffer-choice t)
 
 (setq fill-column 80)
+
+(setq make-backup-files nil) ;; Does not create a backup file on first save
+(setq backup-inhibited t) ;; Disable backup
 
 (require 'jie-emacs-completion)
 (require 'jie-emacs-editor)
@@ -16,3 +22,4 @@
 (require 'jie-emacs-prog)
 (require 'jie-emacs-theme)
 (require 'jie-emacs-skeletons)
+(require 'jie-emacs-vc)

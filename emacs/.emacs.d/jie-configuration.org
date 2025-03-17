@@ -1,11 +1,11 @@
-#+title: Configuration
+#+Title: Configuration
 #+author: Julien Lambé
 #+email: julien@themosis.com
 #+startup: content indent
 
 This is my personal Emacs configuration. Feel free to explore!
 
-Like many Emacs users, I buil my configuration using "literate
+Like many Emacs users, I build my configuration using "literate
 programming" and I leverage the =org-babel-tangle= function to compile this
 orgmode configuration into the required =.el= files.
 
@@ -43,9 +43,18 @@ The following code snippet is adding the [[https://melpa.org/][Melpa]] archive t
 list of repositories.
 
 #+begin_src emacs-lisp :tangle "init.el"
-    (dolist (package '(("melpa" . "https://melpa.org/packages/")))
-      (add-to-list 'package-archives package t))
+  (dolist (package '(("melpa" . "https://melpa.org/packages/")))
+    (add-to-list 'package-archives package t))
 #+end_src
+
+** Setup quelpa
+Quelpa allows the installation of Emacs packages directly from source.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (use-package quelpa
+    :ensure t)
+#+end_src
+
 ** Default startup buffer
 When opening Emacs, display the =*scratch*= buffer by default.
 
@@ -60,6 +69,14 @@ Set the =fill-column= variable value to =80=.
   (setq fill-column 80)
 #+end_src
 
+** Backup
+Disable automatic file backup.
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq make-backup-files nil) ;; Does not create a backup file on first save
+  (setq backup-inhibited t) ;; Disable backup
+#+end_src
+
 ** Load
 Start loading the modules.
 
@@ -70,6 +87,7 @@ Start loading the modules.
   (require 'jie-emacs-prog)
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
+  (require 'jie-emacs-vc)
 #+end_src
 
 * Lisp
@@ -93,7 +111,10 @@ allocate them a full configuration file...
   ;;; Navigation/View
   ;;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
   (setq scroll-margin 8)
-  
+
+  ;;; Disable menu bar
+  (setq menu-bar-mode nil)
+
   (provide 'jie-emacs-editor)
 #+end_src
 
@@ -127,6 +148,13 @@ Configuration file for anything related to programmation.
               (setq display-line-numbers 'relative)))
 
   ;;; Modes
+  ;;;; Install web-mode
+  (use-package web-mode
+    :ensure t
+    :mode
+    (("\\.phtml\\'" . web-mode)
+     ))
+
   ;;;; Install php-mode
   (defun jie-php-mode ()
     "Personal php-mode init configuration."
@@ -136,6 +164,8 @@ Configuration file for anything related to programmation.
 
   (use-package php-mode
     :ensure t
+    ;;:init
+    ;;(add-hook 'completion-at-point-functions #'php-complete-complete-function)
     :config
     (add-hook 'php-mode-hook #'jie-php-mode)
     (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil 1))
@@ -144,6 +174,7 @@ Configuration file for anything related to programmation.
 #+end_src
 
 ** Completion
+
 **Orderless**
 The [[https://github.com/oantolin/orderless][orderless]] package provides enhanced fuzzy search during
 completion. The current configuration here is putting the "orderless"
@@ -161,33 +192,57 @@ be used to provide code suggestions while typing code or other text
 elements on major modes.
 
 #+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-completion.el"
-    ;;; Use the Oderless package to provide fuzzy find search style.
-    (use-package orderless
-      :ensure t
-      :custom (completion-styles '(orderless basic)))
+  ;;; Use the Oderless package to provide fuzzy find search style.
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
 
-    ;;; Use the Vertico package to get vertical minibuffer UI.
-    (use-package vertico
-      :ensure t
-      :custom
-      (vertico-cycle t)
-      (vertico-count 4)
-      :init (vertico-mode))
+  ;;; Use the Vertico package to get vertical minibuffer UI.
+  (use-package vertico
+    :ensure t
+    :custom
+    (vertico-cycle t)
+    (vertico-count 4)
+    :init (vertico-mode))
 
-    ;;; Use the Corfu package for buffer completion UI
-    (use-package corfu
-      :ensure t
-      :custom
-      (corfu-cycle t)
-      :init
-      (global-corfu-mode))
+  ;;; Use the Corfu package for buffer completion UI
+  (use-package corfu
+    :ensure t
+    :custom
+    (corfu-cycle t)
+    :init
+    (global-corfu-mode)
+    :config
+    (add-hook 'corfu-mode-hook #'jie-init-corfu-terminal))
 
-    (use-package emacs
-      :custom
-      ;; Enable indentation+completion using TAB key
-      (tab-always-indent 'complete))
-    
-    (provide 'jie-emacs-completion)
+  ;;; Add Capfs capabilites
+  (use-package cape
+    :init
+    (add-hook 'completion-at-point-functions #'cape-dabbrev)
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-elisp-block))
+
+  (use-package popon
+    :ensure t)
+  ;; Only enables the package if on Emacs version < 31.
+  (use-package corfu-terminal
+    :ensure t
+    :if (< (string-to-number emacs-version) 31)
+    :after '(corfu popon))
+
+  (defun jie-init-corfu-terminal ()
+    "Enable corfu terminal if Emacs version is less than 31."
+    (unless (display-graphic-p)
+              (corfu-terminal-mode +1)))
+
+  (use-package emacs
+    :custom
+    ;; Enable indentation+completion using TAB key
+    (tab-always-indent 'complete))
+
+  (provide 'jie-emacs-completion)
 #+end_src
 
 ** Skeletons
@@ -206,4 +261,20 @@ language as well as any additional headers.
     "#+end_src")
 
   (provide 'jie-emacs-skeletons)
+#+end_src
+
+** Version Control
+Handle any version control client settings.
+
+**Magit**
+For managing Git projects, I use the [[https://magit.vc/][Magit]] package as it provides an
+interface for managing Git workspaces that I'm used to compared to the
+core VC feature of Emacs. Magit has also a larger set of tools related
+to Git.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-vc.el"
+  (use-package magit
+    :ensure t)
+
+  (provide 'jie-emacs-vc)
 #+end_src
