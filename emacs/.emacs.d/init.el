@@ -3,6 +3,10 @@
    (add-to-list 'load-path (locate-user-emacs-file relative-path)))
  '("jie-emacs-lisp" "jie-emacs-modules"))
 
+;;; Path to currently installed Node binaries.
+;;; This is required in order to make the PHP Lsp Server Intelliphense work.
+(add-to-list 'exec-path "~/.config/nvm/versions/node/v23.10.0/bin")
+
 (dolist (package '(("melpa" . "https://melpa.org/packages/")))
   (add-to-list 'package-archives package t))
 

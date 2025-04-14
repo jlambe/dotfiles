@@ -6,6 +6,9 @@
 (setq scroll-margin 8)
 
 ;;; Disable menu bar
-(setq menu-bar-mode nil)
+(menu-bar-mode -1)
+
+;;; Disable tool bar
+(tool-bar-mode -1)
 
 (provide 'jie-emacs-editor)

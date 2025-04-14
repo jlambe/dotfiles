@@ -26,4 +26,9 @@
   (add-hook 'php-mode-hook #'jie-php-mode)
   (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil 1))
 
+;; LSP Intelephense for PHP
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(php-mode . ("intelephense" "--stdio"))))
+
 (provide 'jie-emacs-prog)
