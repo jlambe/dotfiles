@@ -168,7 +168,7 @@ Settings regarding the org-mode.
             ;;; I would like new entries to remember to leave one line gap... except just under the headline.
             ;;; Currently, the ":empty-line-after" is adding an empty line after captured content...
             ;;; but when a new entry is appended, the last remaining empty line is ignored...
-            ("j" "Personal journal entry." plain (file+datetree "journal.org") ""
+            ("j" "Personal journal entry." plain (file+datetree "journal.org") "[%U]\n%?"
              :time-prompt t
              :tree-type day
              :empty-lines-after 1)))
