@@ -21,6 +21,13 @@
         ("j" "Personal journal entry." plain (file+datetree "journal.org") "[%U]\n%?"
          :time-prompt t
          :tree-type day
-         :empty-lines-after 1)))
+         :empty-lines-after 1)
+        ("n" "Note" plain (function jie-org-capture-create-note) "")
+        ))
+
+;;; Function to handle the creation of a new note using org mode capture.
+(defun jie-org-capture-create-note ()
+  "Handle creation of a new captured note."
+  (call-interactively 'find-file))
 
 (provide 'jie-emacs-orgmode)

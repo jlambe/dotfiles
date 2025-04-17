@@ -13,6 +13,12 @@
   (vertico-count 4)
   :init (vertico-mode))
 
+;;; Use Marginalia package to add annotations on the minibuffer entries.
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
+
 ;;; Use the Corfu package for buffer completion UI
 (use-package corfu
   :ensure t
