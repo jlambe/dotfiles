@@ -1,4 +1,4 @@
-#+Title: Configuration
+#+title: Configuration
 #+author: Julien Lambé
 #+email: julien@themosis.com
 #+startup: content indent
@@ -28,10 +28,12 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
 ~.el~ files.
 
 #+begin_src emacs-lisp :tangle "init.el"
+  ;;; -*- lexical-binding: t -*-
+
   (mapc
-   (lambda (relative-path)
-     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
-   '("jie-emacs-lisp" "jie-emacs-modules"))
+    (lambda (relative-path)
+      (add-to-list 'load-path (locate-user-emacs-file relative-path)))
+    '("jie-emacs-lisp" "jie-emacs-modules"))
 #+end_src
 
 ** Setup executable paths
