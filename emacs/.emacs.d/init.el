@@ -1,11 +1,19 @@
+;;; -*- lexical-binding: t -*-
+
 (mapc
- (lambda (relative-path)
-   (add-to-list 'load-path (locate-user-emacs-file relative-path)))
- '("jie-emacs-lisp" "jie-emacs-modules"))
+  (lambda (relative-path)
+    (add-to-list 'load-path (locate-user-emacs-file relative-path)))
+  '("jie-emacs-lisp" "jie-emacs-modules"))
 
 ;;; Path to currently installed Node binaries.
 ;;; This is required in order to make the PHP Lsp Server Intelliphense work.
-(add-to-list 'exec-path "~/.config/nvm/versions/node/v23.10.0/bin")
+;;;(add-to-list 'exec-path "~/.config/nvm/versions/node/v23.10.0/bin")
+;;;(add-to-list 'exec-path "~/.nvm/versions/node/v20.11.0/bin")
+;;;(add-to-list 'exec-path "~/.local/share/nvim/mason/bin")
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :init (exec-path-from-shell-initialize))
 
 (dolist (package '(("melpa" . "https://melpa.org/packages/")))
   (add-to-list 'package-archives package t))
@@ -27,16 +35,3 @@
 (require 'jie-emacs-theme)
 (require 'jie-emacs-skeletons)
 (require 'jie-emacs-vc)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(marginalia magit-popup geiser-guile edit-indirect bui web-mode vertico quelpa php-mode orderless magit ef-themes doom-themes corfu-terminal cape)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

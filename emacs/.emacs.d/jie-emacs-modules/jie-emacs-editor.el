@@ -11,4 +11,9 @@
 ;;; Disable tool bar
 (tool-bar-mode -1)
 
+;;; Default font for macos
+(when (string= system-type "darwin")
+  (add-to-list 'default-frame-alist
+	       '(font . "Menlo 16")))
+
 (provide 'jie-emacs-editor)

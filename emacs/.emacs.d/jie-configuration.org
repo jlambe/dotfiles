@@ -37,10 +37,21 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
 #+end_src
 
 ** Setup executable paths
+I'm currently exploring Emacs on both Linux and Apple platforms. In
+order to correctly work with the GUI version of Emacs, I'm using the
+exec-path-from-shell package to load shell declared environment
+variables and tools in the graphical application version.
+
 #+begin_src emacs-lisp :tangle "init.el"
-  ;;; Path to currently installed Node binaries.
-  ;;; This is required in order to make the PHP Lsp Server Intelliphense work.
-  (add-to-list 'exec-path "~/.config/nvm/versions/node/v23.10.0/bin")
+    ;;; Path to currently installed Node binaries.
+    ;;; This is required in order to make the PHP Lsp Server Intelliphense work.
+    ;;;(add-to-list 'exec-path "~/.config/nvm/versions/node/v23.10.0/bin")
+    ;;;(add-to-list 'exec-path "~/.nvm/versions/node/v20.11.0/bin")
+    ;;;(add-to-list 'exec-path "~/.local/share/nvim/mason/bin")
+    (use-package exec-path-from-shell
+      :ensure t
+      :if (memq window-system '(mac ns x))
+      :init (exec-path-from-shell-initialize))
 #+end_src
 
 ** Repositories
