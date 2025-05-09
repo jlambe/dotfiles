@@ -82,6 +82,20 @@ When opening Emacs, display the =*scratch*= buffer by default.
   (setq initial-buffer-choice t)
 #+end_src
 
+** Modifiers keys bindings
+Depending on the platform used with Emacs, I need to modify some
+modifier keys to work with my keyboard layouts:
+- macos default ch-fr keyboard
+- zsa voyager keyboard
+
+  #+begin_src emacs-lisp :tangle "init.el"
+    ;;; When working on macos, keep the right option key as the meta modifier
+    ;;; and disable the left option key to work as a default alt key so I can
+    ;;; special characters from my ch-fr layout.
+    (when (string= system-type "darwin")
+      (setq mac-right-option-modifier 'meta
+    	mac-option-modifier 'none))
+  #+end_src
 ** Auto-fill column
 Set the =fill-column= variable value to =80=.
 

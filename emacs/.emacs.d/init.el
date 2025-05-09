@@ -23,6 +23,13 @@
 
 (setq initial-buffer-choice t)
 
+;;; When working on macos, keep the right option key as the meta modifier
+;;; and disable the left option key to work as a default alt key so I can
+;;; special characters from my ch-fr layout.
+(when (string= system-type "darwin")
+  (setq mac-right-option-modifier 'meta
+	mac-option-modifier 'none))
+
 (setq fill-column 80)
 
 (setq make-backup-files nil) ;; Does not create a backup file on first save
