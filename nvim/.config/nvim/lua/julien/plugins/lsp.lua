@@ -44,6 +44,34 @@ return {
                 -- to learn the available actions
                 lsp_zero.default_keymaps({ buffer = bufnr })
 
+                -- Hover help
+                vim.keymap.set('n', 'K', function ()
+                    vim.lsp.buf.hover()
+                end)
+                -- Signature help
+                vim.keymap.set('n', 'gS', function ()
+                    vim.lsp.buf.signature_help()
+                end)
+                -- Definition
+                vim.keymap.set('n', 'gd', function ()
+                    vim.lsp.buf.definition()
+                end)
+                -- Declaration
+                vim.keymap.set('n', 'gD', function ()
+                    vim.lsp.buf.declaration()
+                end)
+                -- Implementation
+                vim.keymap.set('n', 'gi', function ()
+                    vim.lsp.buf.implementation()
+                end)
+                -- Type definition
+                vim.keymap.set('n', 'go', function ()
+                    vim.lsp.buf.type_definition()
+                end)
+                -- References
+                vim.keymap.set('n', 'gr', function ()
+                    vim.lsp.buf.references()
+                end)
                 -- Rename
                 vim.keymap.set('n', '<F6>', function()
                     vim.lsp.buf.rename()
