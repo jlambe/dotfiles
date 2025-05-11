@@ -42,11 +42,13 @@ order to correctly work with the GUI version of Emacs, I'm using the
 exec-path-from-shell package to load shell declared environment
 variables and tools in the graphical application version.
 
-#+begin_src emacs-lisp :tangle "init.el"
-  ;;; This is required in order to make the PHP Lsp Server Intelliphense work.
-  ;;; I'm currently sharing a version with neovim and simply point to it.
-  (add-to-list 'exec-path "~/.local/share/nvim/mason/bin")
+My shell environment is also providing additional locations for the
+environment $PATH. I'm currently sharing the neovim LSP servers
+binaries with Emacs so I don't have to install them twice. In order
+for Eglot to work nicely, the $PATH must have the nvim "Mason" bin
+directory set.
 
+#+begin_src emacs-lisp :tangle "init.el"
   (use-package exec-path-from-shell
     :ensure t
     :if (memq window-system '(mac ns x))

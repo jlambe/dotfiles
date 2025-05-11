@@ -5,10 +5,6 @@
     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
   '("jie-emacs-lisp" "jie-emacs-modules"))
 
-;;; This is required in order to make the PHP Lsp Server Intelliphense work.
-;;; I'm currently sharing a version with neovim and simply point to it.
-(add-to-list 'exec-path "~/.local/share/nvim/mason/bin")
-
 (use-package exec-path-from-shell
   :ensure t
   :if (memq window-system '(mac ns x))
