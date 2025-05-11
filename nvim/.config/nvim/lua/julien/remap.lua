@@ -1,6 +1,6 @@
 -- Remap leader key
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = ','
+vim.g.maplocalleader = ','
 
 -- Open Netrw
 -- vim.keymap.set('n', '<C-p>', vim.cmd.Ex)
