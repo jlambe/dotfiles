@@ -37,3 +37,4 @@
 (require 'jie-emacs-theme)
 (require 'jie-emacs-skeletons)
 (require 'jie-emacs-vc)
+(require 'jie-emacs-bindings)

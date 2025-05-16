@@ -123,6 +123,7 @@ Start loading the modules.
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
   (require 'jie-emacs-vc)
+  (require 'jie-emacs-bindings)
 #+end_src
 
 * Lisp
@@ -365,4 +366,19 @@ to Git.
     :ensure t)
 
   (provide 'jie-emacs-vc)
+#+end_src
+
+** Keybindings
+Handle all custom keybings for my personal use.
+
+#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-bindings.el"
+  ;;; C-i move the point at the beginning of line text
+  (keymap-global-set "C-i" 'beginning-of-line-text)
+
+  ;;; C-E keybinding to scroll down by line
+  ;;; C-Y keybinding to scroll up by line
+  (keymap-global-set "C-S-E" 'scroll-down-line)
+  (keymap-global-set "C-S-Y" 'scroll-up-line)
+
+  (provide 'jie-emacs-bindings)
 #+end_src
