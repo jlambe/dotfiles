@@ -24,4 +24,7 @@ vim.keymap.set('n', '<leader>cc', '<cmd>cclose<CR>')
 vim.keymap.set('t', '<ESC>', '<C-\\><C-n>')
 
 -- Tmux Sessionizer
-vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
+vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux new tmux-sessionizer<CR>')
+
+-- PHP
+vim.keymap.set('n', '<leader>rps', '<cmd>!php vendor/bin/phpstan analyze %<CR>');
