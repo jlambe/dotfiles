@@ -6,14 +6,11 @@
 (keymap-global-set "C-S-Y" 'scroll-down-line)
 (keymap-global-set "C-S-E" 'scroll-up-line)
 
-;;; C-L Move to window right
-;;; C-H Move to window left
-;;; C-J Move to window below
-;;; C-K Move to window up
-(keymap-global-set "C-S-l" 'windmove-right)
-(keymap-global-set "C-S-h" 'windmove-left)
-(keymap-global-set "C-S-j" 'windmove-down)
-(keymap-global-set "C-S-k" 'windmove-up)
+
+;; (keymap-global-set "C-S-l" 'windmove-right)
+;; (keymap-global-set "C-S-h" 'windmove-left)
+;; (keymap-global-set "C-S-j" 'windmove-down)
+;; (keymap-global-set "C-S-k" 'windmove-up)
 
 ;;; LSP related keybindings
 (keymap-global-set "C-, C-," 'xref-go-back)

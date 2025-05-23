@@ -118,6 +118,7 @@ Start loading the modules.
 #+begin_src emacs-lisp :tangle "init.el"
   (require 'jie-emacs-completion)
   (require 'jie-emacs-editor)
+  (require 'jie-emacs-windows)
   (require 'jie-emacs-orgmode)
   (require 'jie-emacs-prog)
   (require 'jie-emacs-theme)
@@ -178,6 +179,25 @@ Experimenting with `ef' themes beside core `modus' themes.
   (provide 'jie-emacs-theme)
 #+end_src
 
+** Windows
+*** Windmove
+The windmove package (windmove.el) allows a user to navigate between windows using a
+cardinal direction. The below declaration is defining custom bindings
+to navigate opened windows using keys on the keyboard "home" row.
+
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-windows.el"
+  ;; C-L Move to window right
+  ;; C-H Move to window left
+  ;; C-J Move to window below
+  ;; C-K Move to window up
+  (use-package windmove
+    :bind (("C-S-l" . windmove-right)
+  	 ("C-S-h" . windmove-left)
+  	 ("C-S-j" . windmove-down)
+  	 ("C-S-k" . windmove-up)))
+
+  (provide 'jie-emacs-windows)
+#+end_src
 ** Org-mode
 Settings regarding the org-mode.
 
@@ -380,14 +400,11 @@ Handle all custom keybings for my personal use.
   (keymap-global-set "C-S-Y" 'scroll-down-line)
   (keymap-global-set "C-S-E" 'scroll-up-line)
 
-  ;;; C-L Move to window right
-  ;;; C-H Move to window left
-  ;;; C-J Move to window below
-  ;;; C-K Move to window up
-  (keymap-global-set "C-S-l" 'windmove-right)
-  (keymap-global-set "C-S-h" 'windmove-left)
-  (keymap-global-set "C-S-j" 'windmove-down)
-  (keymap-global-set "C-S-k" 'windmove-up)
+
+  ;; (keymap-global-set "C-S-l" 'windmove-right)
+  ;; (keymap-global-set "C-S-h" 'windmove-left)
+  ;; (keymap-global-set "C-S-j" 'windmove-down)
+  ;; (keymap-global-set "C-S-k" 'windmove-up)
 
   ;;; LSP related keybindings
   (keymap-global-set "C-, C-," 'xref-go-back)

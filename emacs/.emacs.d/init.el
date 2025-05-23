@@ -32,6 +32,7 @@
 
 (require 'jie-emacs-completion)
 (require 'jie-emacs-editor)
+(require 'jie-emacs-windows)
 (require 'jie-emacs-orgmode)
 (require 'jie-emacs-prog)
 (require 'jie-emacs-theme)
