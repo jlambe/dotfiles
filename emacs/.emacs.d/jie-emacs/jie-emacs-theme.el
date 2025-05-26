@@ -1,5 +1,3 @@
-;; (require 'ef-themes)
-;; (load-theme 'ef-light :no-confirm)
 (use-package doom-themes
   :ensure t
   :config

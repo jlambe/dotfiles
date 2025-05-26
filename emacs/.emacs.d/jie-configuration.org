@@ -23,7 +23,7 @@ initialized.
 The regular =init.el= file is read after the GUI is initialized.
 
 ** Setup load paths
-Add the =~/.emacs.d/jie-emacs-lisp/= and =~/.emacs.d/jie-emacs-modules/=
+Add the =~/.emacs.d/jie-lisp/= and =~/.emacs.d/jie-emacs/=
 directories to Emacs ~load-path~. Emacs will then automatically include all the
 ~.el~ files.
 
@@ -33,7 +33,7 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
   (mapc
     (lambda (relative-path)
       (add-to-list 'load-path (locate-user-emacs-file relative-path)))
-    '("jie-emacs-lisp" "jie-emacs-modules"))
+    '("jie-lisp" "jie-emacs"))
 #+end_src
 
 ** Setup executable paths
@@ -116,6 +116,11 @@ Disable automatic file backup.
 Start loading the modules.
 
 #+begin_src emacs-lisp :tangle "init.el"
+  ;; Emacs lisp functions.
+  (require 'jie-lisp-orgmode)
+  (require 'jie-lisp-prog)
+
+  ;; Emacs modules and their configuration.
   (require 'jie-emacs-completion)
   (require 'jie-emacs-editor)
   (require 'jie-emacs-windows)
@@ -132,7 +137,7 @@ Start loading the modules.
 These are common/shared emacs-lisp functions for usage in all the configuration
 files.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-lisp/jie-common.el" :mkdirp yes
+#+begin_src emacs-lisp :tangle "jie-lisp/jie-common.el" :mkdirp yes
 #+end_src
 
 * Modules
@@ -141,24 +146,41 @@ The editor file contains all tiny changes for the Emacs editor that
 don't fit in a specific category yet or are too small changes to
 allocate them a full configuration file...
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-editor.el" :mkdirp yes
-  ;;; Set tab-bar-show mode to hide if there is only one tab left
-  (setq tab-bar-show 1)
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-editor.el" :mkdirp yes
+  (use-package emacs
+    :init
+    ;; Disable menu bar if on Linux GUI or terminal(need to update code here).
+    (menu-bar-mode -1)
 
-  ;;; Navigation/View
-  ;;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
-  (setq scroll-margin 8)
+    ;; Set tab-bar-show mode to hide if there is only one tab left
+    (setq tab-bar-show 1)
 
-  ;;; Disable menu bar
-  (menu-bar-mode -1)
+    ;; Navigation/View
+    ;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
+    (setq scroll-margin 8)
 
-  ;;; Disable tool bar
-  (tool-bar-mode -1)
+    ;; Disable tool bar
+    (tool-bar-mode -1)
 
-  ;;; Default font for macos
-  (when (string= system-type "darwin")
-    (add-to-list 'default-frame-alist
-  	       '(font . "Menlo 16")))
+    ;; Default font for macos
+    (when (string= system-type "darwin")
+      (add-to-list 'default-frame-alist
+    	       '(font . "Menlo 16")))
+    :bind
+    (
+     ;; C-A move the point at the beginning of line text
+     ("C-S-a" . beginning-of-line-text)
+
+     ;; C-E keybinding to scroll up by line
+     ;; C-Y keybinding to scroll down by line-
+     ("C-S-y" . scroll-down-line)
+     ("C-S-e" . scroll-up-line))
+
+    :hook
+    (
+     ;; Use relative line numbers while working on code files.
+     (prog-mode . (lambda ()
+  		  (setq display-line-numbers 'relative)))))
 
   (provide 'jie-emacs-editor)
 #+end_src
@@ -166,9 +188,7 @@ allocate them a full configuration file...
 ** Theme
 Experimenting with `ef' themes beside core `modus' themes.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-theme.el" :mkdirp yes
-  ;; (require 'ef-themes)
-  ;; (load-theme 'ef-light :no-confirm)
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-theme.el" :mkdirp yes
   (use-package doom-themes
     :ensure t
     :config
@@ -180,12 +200,31 @@ Experimenting with `ef' themes beside core `modus' themes.
 #+end_src
 
 ** Windows
-*** Windmove
 The windmove package (windmove.el) allows a user to navigate between windows using a
 cardinal direction. The below declaration is defining custom bindings
 to navigate opened windows using keys on the keyboard "home" row.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-windows.el"
+  (use-package window
+    :custom
+    (display-buffer-alist
+     '(
+       ;; Display the help and xref buffers in bottom right side-window.
+       ("\\*\\([Hh]elp\\|xref\\)\\*"
+        (display-buffer-in-side-window)
+        (window-height . 0.25)
+        (side . bottom)
+        (slot . 1))
+       ;; Display the eldoc buffer in bottom left side-window.
+       ("\\*[Ee]ldoc\\*"
+        (display-buffer-in-side-window)
+        (window-height . 0.25)
+        (side . bottom)
+        (slot . -1))))
+    :bind
+    ;; Toggle on/off display of side windows while pressing the F8 function key.
+    ("<f8>" . window-toggle-side-windows))
+
   ;; C-L Move to window right
   ;; C-H Move to window left
   ;; C-J Move to window below
@@ -198,83 +237,101 @@ to navigate opened windows using keys on the keyboard "home" row.
 
   (provide 'jie-emacs-windows)
 #+end_src
+
 ** Org-mode
 Settings regarding the org-mode.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-orgmode.el"
-  ;;; Enable auto-fill-mode when working within an .org file.
-  (add-hook 'org-mode-hook 'auto-fill-mode)
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-orgmode.el"
+  (use-package org
+    :init
+    ;; Setup default org-directory to be ~/Notes
+    (setq org-directory "~/Notes")
 
-  ;;; Setup default org-directory to be ~/Notes
-  (setq org-directory "~/Notes")
+    ;; Configure Org mode capture.
+    (setq org-default-notes-files (concat org-directory "/inbox.org"))
 
-  ;;; Configure Org mode capture.
-  (setq org-default-notes-files (concat org-directory "/inbox.org"))
+    ;; Configure Org mode capture templates.
+    ;; Configure the "Idea" template:
+    ;; Primarily used to quick add list items in a single file.
+    ;; Anything, anytime, that comes up to my mind and that I would need to revisit in the future...
+    ;; Configure the "Journal" template:
+    ;; Personal journal entries, ordered by day/month/year.
+    (setq org-capture-templates
+      '(("i" "Quicky capture an idea." item (file+headline "inbox.org" "Inbox") "")
+        ;;; I would like new entries to remember to leave one line gap... except just under the headline.
+        ;;; Currently, the ":empty-line-after" is adding an empty line after captured content...
+        ;;; but when a new entry is appended, the last remaining empty line is ignored...
+        ("j" "Personal journal entry." plain (file+datetree "journal.org") "[%U]\n%?"
+         :time-prompt t
+         :tree-type day
+         :empty-lines-after 1)
+        ("n" "Note" plain (function jie-org-capture-create-note) "")
+        ))
+    :hook
+    ;; Enable auto-fill-mode when working within an .org file.
+    ((org-mode . auto-fill-mode)))
 
-  ;;; Configure Org mode capture templates.
-  ;;; Configure the "Idea" template:
-  ;;; Primarily used to quick add list items in a single file.
-  ;;; Anything, anytime, that comes up to my mind and that I would need to revisit in the future...
-  ;;; Configure the "Journal" template:
-  ;;; Personal journal entries, ordered by day/month/year.
-  (setq org-capture-templates
-        '(("i" "Quicky capture an idea." item (file+headline "inbox.org" "Inbox") "")
-          ;;; I would like new entries to remember to leave one line gap... except just under the headline.
-          ;;; Currently, the ":empty-line-after" is adding an empty line after captured content...
-          ;;; but when a new entry is appended, the last remaining empty line is ignored...
-          ("j" "Personal journal entry." plain (file+datetree "journal.org") "[%U]\n%?"
-           :time-prompt t
-           :tree-type day
-           :empty-lines-after 1)
-          ("n" "Note" plain (function jie-org-capture-create-note) "")
-          ))
+  (provide 'jie-emacs-orgmode)
+#+end_src
 
-  ;;; Function to handle the creation of a new note using org mode capture.
+#+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-orgmode.el"
+  ;; Function to handle the creation of a new note using org mode capture.
   (defun jie-org-capture-create-note ()
     "Handle creation of a new captured note."
     (call-interactively 'find-file))
-
-  (provide 'jie-emacs-orgmode)
+  
+  (provide 'jie-lisp-orgmode)
 #+end_src
 
 ** Prog-mode
 Configuration file for anything related to programmation.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-prog.el"
-    ;;; Use relative line numbers while working on code files.
-    (add-hook 'prog-mode-hook
-              (lambda ()
-                (setq display-line-numbers 'relative)))
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-prog.el"
+  ;; Install web-mode
+  (use-package web-mode
+    :ensure t
+    :mode
+    (("\\.phtml\\'" . web-mode)))
 
-    ;;; Modes
-    ;;;; Install web-mode
-    (use-package web-mode
-      :ensure t
-      :mode
-      (("\\.phtml\\'" . web-mode)
-       ))
+  ;; Install php-mode
+  (use-package php-mode
+    :ensure t
+    :hook (
+         (php-mode . jie-php-mode)))
 
-    ;;;; Install php-mode
-    (defun jie-php-mode ()
-      "Personal php-mode init configuration."
-      (progn
-        (subword-mode 1)
-        (setq-local show-trailing-whitespace 1)))
 
-    (use-package php-mode
-      :ensure t
-      ;;:init
-      ;;(add-hook 'completion-at-point-functions #'php-complete-complete-function)
-      :config
-      (add-hook 'php-mode-hook #'jie-php-mode)
-      (add-hook 'hack-local-variables-hook 'php-ide-turn-on nil 1))
+  ;; Eglot -  LSP
+  ;; Intelephense for PHP
+  (use-package eglot
+    :config
+    (add-to-list 'eglot-server-programs
+                 '(php-mode . ("intelephense" "--stdio")))
+    :bind
+    (("C-, D" . eglot-find-declaration)
+     ("C-, i" . eglot-find-implementation)
+     ("C-, x" . eglot-code-actions)
+     ("<f7>" . eglot-format-buffer)
+     ("<f6>" . eglot-rename)))
 
-    ;; LSP Intelephense for PHP
-    (with-eval-after-load 'eglot
-      (add-to-list 'eglot-server-programs
-                   '(php-mode . ("intelephense" "--stdio"))))
+  ;; Xref
+  (use-package xref
+    :bind
+    (("C-, ," . xref-go-back)
+     ("C-, d" . xref-find-definitions)
+     ("C-, r" . xref-find-references)))
 
-    (provide 'jie-emacs-prog)
+  (provide 'jie-emacs-prog)
+#+end_src
+
+#+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-prog.el"
+  ;; php-mode init configuration function.
+  (defun jie-php-mode ()
+    "Personal php-mode init configuration."
+    (progn
+      (subword-mode 1)
+      (setq-local show-trailing-whitespace 1)))
+
+  (provide 'jie-lisp-prog)
 #+end_src
 
 ** Completion
@@ -294,7 +351,7 @@ The corfu package provides buffer completion at point UI. It can then
 be used to provide code suggestions while typing code or other text
 elements on major modes.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-completion.el"
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-completion.el"
   ;;; Use the Oderless package to provide fuzzy find search style.
   (use-package orderless
     :ensure t
@@ -359,7 +416,7 @@ elements on major modes.
 Generate an orgmode code block structure where you can specify the programming
 language as well as any additional headers.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-skeletons.el"
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-skeletons.el"
   (define-skeleton jie-skeleton-org-mode-code-block
     "A skeleton to generate an org-mode code block structure."
     "Code language: "
@@ -381,39 +438,9 @@ interface for managing Git workspaces that I'm used to compared to the
 core VC feature of Emacs. Magit has also a larger set of tools related
 to Git.
 
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-vc.el"
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-vc.el"
   (use-package magit
     :ensure t)
 
   (provide 'jie-emacs-vc)
-#+end_src
-
-** Keybindings
-Handle all custom keybings for my personal use.
-
-#+begin_src emacs-lisp :tangle "jie-emacs-modules/jie-emacs-bindings.el"
-  ;;; C-A move the point at the beginning of line text
-  (keymap-global-set "C-S-a" 'beginning-of-line-text)
-
-  ;;; C-E keybinding to scroll up by line
-  ;;; C-Y keybinding to scroll down by line
-  (keymap-global-set "C-S-Y" 'scroll-down-line)
-  (keymap-global-set "C-S-E" 'scroll-up-line)
-
-
-  ;; (keymap-global-set "C-S-l" 'windmove-right)
-  ;; (keymap-global-set "C-S-h" 'windmove-left)
-  ;; (keymap-global-set "C-S-j" 'windmove-down)
-  ;; (keymap-global-set "C-S-k" 'windmove-up)
-
-  ;;; LSP related keybindings
-  (keymap-global-set "C-, C-," 'xref-go-back)
-  (keymap-global-set "C-, C-d" 'xref-find-definitions)
-  (keymap-global-set "C-, C-r" 'xref-find-references)
-
-  (keymap-global-set "C-, C-S-d" 'eglot-find-declaration)
-  (keymap-global-set "<f7>" 'eglot-format-buffer)
-  (keymap-global-set "<f6>" 'eglot-rename)
-
-  (provide 'jie-emacs-bindings)
 #+end_src

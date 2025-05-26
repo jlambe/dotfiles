@@ -3,7 +3,7 @@
 (mapc
   (lambda (relative-path)
     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
-  '("jie-emacs-lisp" "jie-emacs-modules"))
+  '("jie-lisp" "jie-emacs"))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -30,6 +30,11 @@
 (setq make-backup-files nil) ;; Does not create a backup file on first save
 (setq backup-inhibited t) ;; Disable backup
 
+;; Emacs lisp functions.
+(require 'jie-lisp-orgmode)
+(require 'jie-lisp-prog)
+
+;; Emacs modules and their configuration.
 (require 'jie-emacs-completion)
 (require 'jie-emacs-editor)
 (require 'jie-emacs-windows)
