@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;;; Use the Oderless package to provide fuzzy find search style.
 (use-package orderless
   :ensure t

@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; Install web-mode
 (use-package web-mode
   :ensure t

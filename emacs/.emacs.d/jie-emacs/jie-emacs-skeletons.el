@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (define-skeleton jie-skeleton-org-mode-code-block
   "A skeleton to generate an org-mode code block structure."
   "Code language: "

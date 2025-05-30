@@ -17,6 +17,7 @@ The =early-init.el= file is loaded before the package system and GUI is
 initialized.
 
 #+begin_src emacs-lisp :tangle "early-init.el"
+  ;;; -*- lexical-binding: t -*-
 #+end_src
 
 * Init
@@ -138,6 +139,7 @@ These are common/shared emacs-lisp functions for usage in all the configuration
 files.
 
 #+begin_src emacs-lisp :tangle "jie-lisp/jie-common.el" :mkdirp yes
+  ;;; -*- lexical-binding: t -*-
 #+end_src
 
 * Modules
@@ -147,48 +149,56 @@ don't fit in a specific category yet or are too small changes to
 allocate them a full configuration file...
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-editor.el" :mkdirp yes
-  (use-package emacs
-    :init
-    ;; Disable menu bar if on Linux GUI or terminal(need to update code here).
-    (menu-bar-mode -1)
+    ;;; -*- lexical-binding: t -*-
 
-    ;; Set tab-bar-show mode to hide if there is only one tab left
-    (setq tab-bar-show 1)
+    (use-package emacs
+      :init
+      ;; Disable menu bar if on Linux GUI or terminal(need to update code here).
+      (menu-bar-mode -1)
 
-    ;; Navigation/View
-    ;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
-    (setq scroll-margin 8)
+      ;; Set tab-bar-show mode to hide if there is only one tab left
+      (setq tab-bar-show 1)
 
-    ;; Disable tool bar
-    (tool-bar-mode -1)
+      ;; Navigation/View
+      ;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
+      (setq scroll-margin 8)
 
-    ;; Default font for macos
-    (when (string= system-type "darwin")
-      (add-to-list 'default-frame-alist
-    	       '(font . "Menlo 16")))
-    :bind
-    (
-     ;; C-A move the point at the beginning of line text
-     ("C-S-a" . beginning-of-line-text)
+      ;; Disable tool bar
+      (tool-bar-mode -1)
 
-     ;; C-E keybinding to scroll up by line
-     ;; C-Y keybinding to scroll down by line-
-     ("C-S-y" . scroll-down-line)
-     ("C-S-e" . scroll-up-line))
+      ;; Default font for macos
+      (when (string= system-type "darwin")
+        (add-to-list 'default-frame-alist
+      	       '(font . "Menlo 16")))
 
-    :hook
-    (
-     ;; Use relative line numbers while working on code files.
-     (prog-mode . (lambda ()
-  		  (setq display-line-numbers 'relative)))))
+      ;; Tree-sitter configuration
+      (setq treesit-language-source-alist '(
+  					  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")))
+      :bind
+      (
+       ;; C-A move the point at the beginning of line text
+       ("C-S-a" . beginning-of-line-text)
 
-  (provide 'jie-emacs-editor)
+       ;; C-E keybinding to scroll up by line
+       ;; C-Y keybinding to scroll down by line-
+       ("C-S-y" . scroll-down-line)
+       ("C-S-e" . scroll-up-line))
+
+      :hook
+      (
+       ;; Use relative line numbers while working on code files.
+       (prog-mode . (lambda ()
+    		  (setq display-line-numbers 'relative)))))
+
+    (provide 'jie-emacs-editor)
 #+end_src
 
 ** Theme
 Experimenting with `ef' themes beside core `modus' themes.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-theme.el" :mkdirp yes
+  ;;; -*- lexical-binding: t -*-
+  
   (use-package doom-themes
     :ensure t
     :config
@@ -205,6 +215,8 @@ cardinal direction. The below declaration is defining custom bindings
 to navigate opened windows using keys on the keyboard "home" row.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-windows.el"
+  ;;; -*- lexical-binding: t -*-
+  
   (use-package window
     :custom
     (display-buffer-alist
@@ -242,6 +254,8 @@ to navigate opened windows using keys on the keyboard "home" row.
 Settings regarding the org-mode.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-orgmode.el"
+  ;;; -*- lexical-binding: t -*-
+  
   (use-package org
     :init
     ;; Setup default org-directory to be ~/Notes
@@ -275,11 +289,13 @@ Settings regarding the org-mode.
 #+end_src
 
 #+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-orgmode.el"
+  ;;; -*- lexical-binding: t -*-
+  
   ;; Function to handle the creation of a new note using org mode capture.
   (defun jie-org-capture-create-note ()
     "Handle creation of a new captured note."
     (call-interactively 'find-file))
-  
+
   (provide 'jie-lisp-orgmode)
 #+end_src
 
@@ -287,6 +303,8 @@ Settings regarding the org-mode.
 Configuration file for anything related to programmation.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-prog.el"
+  ;;; -*- lexical-binding: t -*-
+  
   ;; Install web-mode
   (use-package web-mode
     :ensure t
@@ -324,12 +342,14 @@ Configuration file for anything related to programmation.
 #+end_src
 
 #+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-prog.el"
+  ;;; -*- lexical-binding: t -*-
+    
   ;; php-mode init configuration function.
   (defun jie-php-mode ()
     "Personal php-mode init configuration."
     (progn
-      (subword-mode 1)
-      (setq-local show-trailing-whitespace 1)))
+        (subword-mode 1)
+        (setq-local show-trailing-whitespace 1)))
 
   (provide 'jie-lisp-prog)
 #+end_src
@@ -352,6 +372,8 @@ be used to provide code suggestions while typing code or other text
 elements on major modes.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-completion.el"
+  ;;; -*- lexical-binding: t -*-
+  
   ;;; Use the Oderless package to provide fuzzy find search style.
   (use-package orderless
     :ensure t
@@ -417,6 +439,8 @@ Generate an orgmode code block structure where you can specify the programming
 language as well as any additional headers.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-skeletons.el"
+  ;;; -*- lexical-binding: t -*-
+  
   (define-skeleton jie-skeleton-org-mode-code-block
     "A skeleton to generate an org-mode code block structure."
     "Code language: "
@@ -439,6 +463,8 @@ core VC feature of Emacs. Magit has also a larger set of tools related
 to Git.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-vc.el"
+  ;;; -*- lexical-binding: t -*-
+  
   (use-package magit
     :ensure t)
 

@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package window
   :custom
   (display-buffer-alist

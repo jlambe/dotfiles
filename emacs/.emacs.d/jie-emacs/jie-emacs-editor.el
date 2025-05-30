@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package emacs
   :init
   ;; Disable menu bar if on Linux GUI or terminal(need to update code here).
@@ -17,6 +19,10 @@
   (when (string= system-type "darwin")
     (add-to-list 'default-frame-alist
   	       '(font . "Menlo 16")))
+
+  ;; Tree-sitter configuration
+  (setq treesit-language-source-alist '(
+					  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")))
   :bind
   (
    ;; C-A move the point at the beginning of line text

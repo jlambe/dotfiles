@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (use-package org
   :init
   ;; Setup default org-directory to be ~/Notes
