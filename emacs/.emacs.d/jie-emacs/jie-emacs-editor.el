@@ -21,8 +21,14 @@
   	       '(font . "Menlo 16")))
 
   ;; Tree-sitter configuration
-  (setq treesit-language-source-alist '(
-					  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")))
+  (setq treesit-language-source-alist
+	'(
+	  (css "https://github.com/tree-sitter/tree-sitter-css")
+	  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
+	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
+	  (php "https://github.com/tree-sitter/tree-sitter-php" "master" "php/src")
+	  (make "https://github.com/alemuller/tree-sitter-make")
+	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
   :bind
   (
    ;; C-A move the point at the beginning of line text
