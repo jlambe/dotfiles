@@ -11,6 +11,8 @@
   ;; Navigation/View
   ;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
   (setq scroll-margin 8)
+  ;;; Allow to scroll up to the beginning or down to the end of the buffer.
+  (setq scroll-error-top-bottom t)
 
   ;; Disable tool bar
   (tool-bar-mode -1)
@@ -41,7 +43,6 @@
 
    ;; C-6 keybinding to switch between two recent buffers
    ("C-6" . mode-line-other-buffer))
-
   :hook
   (
    ;; Use relative line numbers while working on code files.
