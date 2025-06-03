@@ -35,9 +35,12 @@
    ("C-S-a" . beginning-of-line-text)
 
    ;; C-E keybinding to scroll up by line
-   ;; C-Y keybinding to scroll down by line-
+   ;; C-Y keybinding to scroll down by line
    ("C-S-y" . scroll-down-line)
-   ("C-S-e" . scroll-up-line))
+   ("C-S-e" . scroll-up-line)
+
+   ;; C-6 keybinding to switch between two recent buffers
+   ("C-6" . mode-line-other-buffer))
 
   :hook
   (

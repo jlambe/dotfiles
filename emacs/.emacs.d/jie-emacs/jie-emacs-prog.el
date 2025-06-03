@@ -12,6 +12,10 @@
   :hook (
        (php-mode . jie-php-mode)))
 
+;; Configure PHP Tree Sitter mode
+(use-package php-ts-mode
+  :config
+  (php-ts-mode-set-global-style 'psr2))
 
 ;; Eglot -  LSP
 ;; Intelephense for PHP
