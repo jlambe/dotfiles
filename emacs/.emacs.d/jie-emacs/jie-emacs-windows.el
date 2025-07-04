@@ -1,6 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package window
+  :config
+  (setq switch-to-buffer-obey-display-actions t)
   :custom
   (display-buffer-alist
    '(

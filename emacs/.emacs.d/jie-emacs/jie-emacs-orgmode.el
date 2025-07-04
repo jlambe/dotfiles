@@ -5,6 +5,11 @@
   ;; Setup default org-directory to be ~/Notes
   (setq org-directory "~/Notes")
 
+  ;; Default TODO keywords/sequences
+  ;; By default, I like having an "IN-PROGRESS" state so I can see things I'm currently working on.
+  (setq org-todo-keywords
+	'((sequence "TODO" "IN-PROGRESS" "|" "DONE")))
+
   ;; Configure Org mode capture.
   (setq org-default-notes-files (concat org-directory "/inbox.org"))
 

@@ -1,0 +1,6 @@
+[user]
+	name = Julien Lambé
+	email = julien@themosis.com
+
+[core]
+	excludesFile = ~/.gitignore

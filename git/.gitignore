@@ -1,0 +1,7 @@
+# Always ignore a directory with ${whoiam} value
+# while working on Git project.
+# This allows me to have a personal directory with
+# scratch files on any project I work.
+# Original idea from Phil Hofmann
+# https://200ok.ch/posts/2025-04-21_managing_untracked_files_in_git_projects_with_a_personal_directory.html
+.julien/

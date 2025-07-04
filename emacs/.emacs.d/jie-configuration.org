@@ -126,10 +126,12 @@ Start loading the modules.
   (require 'jie-emacs-editor)
   (require 'jie-emacs-windows)
   (require 'jie-emacs-orgmode)
+  (require 'jie-emacs-writing)
   (require 'jie-emacs-prog)
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
   (require 'jie-emacs-vc)
+  (require 'jie-emacs-vterm)
   (require 'jie-emacs-bindings)
 #+end_src
 
@@ -208,13 +210,13 @@ Experimenting with `ef' themes beside core `modus' themes.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-theme.el" :mkdirp yes
   ;;; -*- lexical-binding: t -*-
-  
+
   (use-package doom-themes
-    :ensure t
-    :config
-    (setq doom-themes-enable-bold t
-          doom-themes-enable-italic t)
-    (load-theme 'doom-oksolar-light t))
+     :ensure t
+     :config
+     (setq doom-themes-enable-bold t
+           doom-themes-enable-italic t)
+     (load-theme 'doom-one-light t))
 
   (provide 'jie-emacs-theme)
 #+end_src
@@ -226,8 +228,10 @@ to navigate opened windows using keys on the keyboard "home" row.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-windows.el"
   ;;; -*- lexical-binding: t -*-
-  
+
   (use-package window
+    :config
+    (setq switch-to-buffer-obey-display-actions t)
     :custom
     (display-buffer-alist
      '(
@@ -265,11 +269,16 @@ Settings regarding the org-mode.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-orgmode.el"
   ;;; -*- lexical-binding: t -*-
-  
+
   (use-package org
     :init
     ;; Setup default org-directory to be ~/Notes
     (setq org-directory "~/Notes")
+
+    ;; Default TODO keywords/sequences
+    ;; By default, I like having an "IN-PROGRESS" state so I can see things I'm currently working on.
+    (setq org-todo-keywords
+  	'((sequence "TODO" "IN-PROGRESS" "|" "DONE")))
 
     ;; Configure Org mode capture.
     (setq org-default-notes-files (concat org-directory "/inbox.org"))
@@ -309,6 +318,18 @@ Settings regarding the org-mode.
   (provide 'jie-lisp-orgmode)
 #+end_src
 
+** Markdown Mode
+Install the [[https://jblevins.org/projects/markdown-mode/][markdown-mode]] package to help better visualize markdown
+files.
+
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-writing.el"
+  ;;; -*- lexical-binding: t -*-
+  (use-package markdown-mode
+    :ensure t)
+
+  (provide 'jie-emacs-writing)
+#+end_src
+
 ** Prog-mode
 Configuration file for anything related to programmation.
 
@@ -325,12 +346,14 @@ Configuration file for anything related to programmation.
   (use-package php-mode
     :ensure t
     :hook (
-         (php-mode . jie-php-mode)))
+  	 (php-mode . jie-php-mode)))
 
   ;; Configure PHP Tree Sitter mode
   (use-package php-ts-mode
-    :config
-    (php-ts-mode-set-global-style 'psr2))
+    :hook (
+  	 (php-ts-mode . (lambda ()
+  			  (setq tab-width 4
+  				indent-tabs-mode nil)))))
 
   ;; Eglot -  LSP
   ;; Intelephense for PHP
@@ -483,4 +506,15 @@ to Git.
     :ensure t)
 
   (provide 'jie-emacs-vc)
+#+end_src
+** Vterm
+Handle configuration of the vterm package.
+
+#+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-vterm.el"
+  ;;; -*- lexical-binding: t -*-
+
+  (use-package vterm
+    :ensure t)
+
+  (provide 'jie-emacs-vterm)
 #+end_src
