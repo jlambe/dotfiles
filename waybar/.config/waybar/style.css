@@ -1,0 +1,22 @@
+@import "latte.css";
+
+* {
+    font-family: FiraCode, FontAwesome, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: @text;
+}
+
+window#waybar {
+    background-color: shade(@base, 0.9);
+    border: 2px solid alpha(@crust, 0.3);
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button.focused {
+    background-color: shade(@surface0, 1);
+}
