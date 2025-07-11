@@ -1,5 +1,5 @@
 ;;; -*- lexical-binding: t -*-
-  
+
 ;; php-mode init configuration function.
 (defun jie-php-mode ()
   "Personal php-mode init configuration."

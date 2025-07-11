@@ -1,14 +1,14 @@
-@import "latte.css";
+@import "mocha.css";
 
 * {
     font-family: FiraCode, FontAwesome, Helvetica, Arial, sans-serif;
     font-size: 13px;
-    color: @text;
 }
 
 window#waybar {
-    background-color: shade(@base, 0.9);
-    border: 2px solid alpha(@crust, 0.3);
+    background-color: @base;
+    color: @text;
+    border: none;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -17,6 +17,21 @@ window#waybar.hidden {
     opacity: 0.2;
 }
 
-#workspaces button.focused {
-    background-color: shade(@surface0, 1);
+#workspaces button {
+    color: @text;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
 }
+
+#workspaces button:hover {
+    background: @surface2;
+    font-weight: 400;
+    border: none;
+    text-shadow: none;
+}
+
+#workspaces button.focused {
+    background-color: @surface1;
+}
+

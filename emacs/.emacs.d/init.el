@@ -23,7 +23,7 @@
 ;;; special characters from my ch-fr layout.
 (when (string= system-type "darwin")
   (setq mac-right-option-modifier 'meta
-	mac-option-modifier 'none))
+    mac-option-modifier 'none))
 
 (setq fill-column 80)
 
@@ -50,7 +50,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(exec-path-from-shell magit-popup geiser-guile edit-indirect bui web-mode vertico quelpa php-mode orderless marginalia magit ef-themes doom-themes corfu-terminal cape)))
+   '(cape corfu-terminal doom-themes ef-themes exec-path-from-shell magit
+	  marginalia orderless php-mode quelpa vertico web-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

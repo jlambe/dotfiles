@@ -2,6 +2,7 @@
 {
     "layer": "top",
     "position": "top",
+    "spacing": 4,
     "modules-left": [
         "sway/workspaces",
 	"sway/mode",
@@ -13,8 +14,24 @@
     "modules-right": [
         "custom/power"
     ],
-
     //"sway/workspaces": {},
+    "sway/language": {
+        "format": "{long}"
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%d/%m/%Y}"
+    },
     "custom/power": {
         "format" : "⏻ ",
 	"tooltip": false,
