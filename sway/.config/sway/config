@@ -19,7 +19,8 @@ set $right l
 set $term foot
 
 # Your preferred application launcher
-set $menu wmenu-run
+#set $menu wmenu-run
+set $menu wofi
 
 include /etc/sway/config-vars.d/*
 
