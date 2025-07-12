@@ -12,6 +12,8 @@
         "clock"
     ],
     "modules-right": [
+        "wireplumber",
+        "backlight",
         "custom/power"
     ],
     //"sway/workspaces": {},
@@ -28,9 +30,17 @@
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
+    "backlight": {
+        "device": "acpi_video0",
+        "format": "{percent}%"
+    },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format-alt": "{:%d/%m/%Y}"
+    },
+    "wireplumber": {
+        "format": "{volume}%",
+	"format-muted": "Muted"
     },
     "custom/power": {
         "format" : "⏻ ",
