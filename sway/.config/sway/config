@@ -44,13 +44,14 @@ output HDMI-A-1 {
 } 
 
 ### Idle configuration
-#
-# Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#          before-sleep 'swaylock -f -c 000000'
+# Automatically lock screen after 300 seconds if inactivity.
+# -c (background-color) value is equal to waybar @base Catppuccin
+# Mocha color.
+exec swayidle -w \
+     timeout 300 'swaylock -f -c 1e1e2e' \
+     timeout 600 'swaymsg "output * power off"' \
+     resume 'swaymsg "output * power on"' \
+     before-sleep 'swaylock -f -c 1e1e2e'
 #
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
