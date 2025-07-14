@@ -218,6 +218,9 @@ Experimenting with `ef' themes beside core `modus' themes.
            doom-themes-enable-italic t)
      (load-theme 'doom-one-light t))
 
+  (use-package nerd-icons
+    :ensure t)
+
   (provide 'jie-emacs-theme)
 #+end_src
 

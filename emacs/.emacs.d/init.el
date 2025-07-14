@@ -23,7 +23,7 @@
 ;;; special characters from my ch-fr layout.
 (when (string= system-type "darwin")
   (setq mac-right-option-modifier 'meta
-    mac-option-modifier 'none))
+	mac-option-modifier 'none))
 
 (setq fill-column 80)
 
@@ -39,19 +39,19 @@
 (require 'jie-emacs-editor)
 (require 'jie-emacs-windows)
 (require 'jie-emacs-orgmode)
+(require 'jie-emacs-writing)
 (require 'jie-emacs-prog)
 (require 'jie-emacs-theme)
 (require 'jie-emacs-skeletons)
 (require 'jie-emacs-vc)
+(require 'jie-emacs-vterm)
 (require 'jie-emacs-bindings)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(cape corfu-terminal doom-themes ef-themes exec-path-from-shell magit
-	  marginalia orderless php-mode quelpa vertico web-mode)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

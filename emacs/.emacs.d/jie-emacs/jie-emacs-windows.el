@@ -28,8 +28,8 @@
 ;; C-K Move to window up
 (use-package windmove
   :bind (("C-S-l" . windmove-right)
-       ("C-S-h" . windmove-left)
-       ("C-S-j" . windmove-down)
-       ("C-S-k" . windmove-up)))
+	 ("C-S-h" . windmove-left)
+	 ("C-S-j" . windmove-down)
+	 ("C-S-k" . windmove-up)))
 
 (provide 'jie-emacs-windows)
