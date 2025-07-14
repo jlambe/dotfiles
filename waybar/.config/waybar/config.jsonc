@@ -17,7 +17,21 @@
 	"network",
         "custom/power"
     ],
-    //"sway/workspaces": {},
+    "sway/workspaces": {
+        "format": "{icon}",
+        "disable-scroll": true,
+	"all-outputs": false,
+	"format-icons": {
+            "1": "",
+	    "2": "󰞷",
+	    "3": ""
+        },
+	"persistent-workspaces": {
+	    "1": [],
+	    "2": [],
+	    "3": []
+        }
+    },
     "sway/language": {
         "format": "{long}"
     },

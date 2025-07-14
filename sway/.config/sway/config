@@ -274,6 +274,8 @@ bar {
     # The default just shows the current date and time.
     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
 
+    pango_markup enabled
+
     colors {
         statusline #ffffff
         background #323232
