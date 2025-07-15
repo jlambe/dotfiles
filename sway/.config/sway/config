@@ -189,7 +189,7 @@ input "type:touchpad" {
     bindsym $mod+e layout toggle split
 
     # Make the current focus fullscreen
-    bindsym $mod+f fullscreen
+    bindsym $mod+Shift+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
     bindsym $mod+Shift+space floating toggle
@@ -260,6 +260,16 @@ bindsym $mod+r mode "resize"
     
     # Special key to take a screenshot with grim
     bindsym Print exec grim
+
+    # Applications
+    bindsym $mod+f exec nautilus --new-window
+
+# Default applications/workspaces.
+exec {
+     swaymsg 'workspace 1; exec emacs; workspace back_and_forth;'
+     swaymsg 'workspace 2; exec foot; workspace back_and_forth;'
+     swaymsg 'workspace 3; exec firefox; workspace back_and_forth;'
+}
 
 #
 # Status Bar:
