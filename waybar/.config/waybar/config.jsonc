@@ -47,7 +47,8 @@
     },
     "backlight": {
         "device": "acpi_video0",
-        "format": "{percent}%"
+        "format": "{icon} {percent}%",
+	"format-icons": "󰃟"
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -55,12 +56,13 @@
     },
     "network": {
         "format-ethernet": "Wired:{ipaddr}",
-        "format-wifi": "Wifi:{essid}",
-	"format-disabled": "Disabled",
-	"format-disconnected": "Disconnected"
+        "format-wifi": "{icon} {essid}",
+	"format-disabled": "󰖪",
+	"format-disconnected": "󰤯",
+	"format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"]
     },
     "wireplumber": {
-        "format": "{volume}%",
+        "format": " {volume}%",
 	"format-muted": "Muted"
     },
     "custom/power": {
