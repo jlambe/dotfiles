@@ -24,7 +24,8 @@
 	"format-icons": {
             "1": "",
 	    "2": "󰞷",
-	    "3": ""
+	    "3": "",
+	    "default": ""
         },
 	"persistent-workspaces": {
 	    "1": [],
@@ -62,8 +63,8 @@
 	"format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"]
     },
     "wireplumber": {
-        "format": " {volume}%",
-	"format-muted": "Muted"
+        "format": " {volume}%",
+	"format-muted": ""
     },
     "custom/power": {
         "format" : " {icon} ",
