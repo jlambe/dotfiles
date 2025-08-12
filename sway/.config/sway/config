@@ -24,6 +24,9 @@ set $menu wofi
 
 include /etc/sway/config-vars.d/*
 
+### Sway general configuration
+default_border pixel 2
+
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
@@ -48,8 +51,8 @@ output HDMI-A-1 {
 # -c (background-color) value is equal to waybar @base Catppuccin
 # Mocha color.
 exec swayidle -w \
-     timeout 300 'swaylock -f -c 1e1e2e' \
-     timeout 600 'swaymsg "output * power off"' \
+     timeout 900 'swaylock -f -c 1e1e2e' \
+     timeout 1800 'swaymsg "output * power off"' \
      resume 'swaymsg "output * power on"' \
      before-sleep 'swaylock -f -c 1e1e2e'
 #
