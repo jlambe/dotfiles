@@ -111,6 +111,7 @@ Disable automatic file backup.
 #+begin_src emacs-lisp :tangle "init.el"
   (setq make-backup-files nil) ;; Does not create a backup file on first save
   (setq backup-inhibited t) ;; Disable backup
+  (setq vc-make-backup-files nil) ;; Disable backup if under version control
 #+end_src
 
 ** Load
@@ -166,6 +167,10 @@ allocate them a full configuration file...
     (setq scroll-margin 8)
     ;;; Allow to scroll up to the beginning or down to the end of the buffer.
     (setq scroll-error-top-bottom t)
+    ;;; Preserve screeb position while scrolling
+    (setq scroll-preserve-screen-position t)
+    ;;; Number of lines of continuity when scrolling by screenfuls.
+    (setq next-screen-context-lines 8)
 
     ;; Disable tool bar
     (tool-bar-mode -1)
@@ -181,9 +186,37 @@ allocate them a full configuration file...
   	  (css "https://github.com/tree-sitter/tree-sitter-css")
   	  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
   	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
-  	  (php "https://github.com/tree-sitter/tree-sitter-php" "master" "php/src")
+  	  (json "https://github.com/tree-sitter/tree-sitter-json")
+  	  (php "https://github.com/tree-sitter/tree-sitter-php" "v0.23.12" "php/src")
   	  (make "https://github.com/alemuller/tree-sitter-make")
-  	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
+  	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
+  	  (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
+  	  (c "https://github.com/tree-sitter/tree-sitter-c")
+            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+    :mode
+        (
+  	 ("\\.tsx\\'" . tsx-ts-mode)
+  	 ("\\.jsx\\'" . tsx-ts-mode)
+  	 ("\\.js\\'" . typescript-ts-mode)
+  	 ("\\.ts\\'" . typescript-ts-mode)
+  	 ("\\.mjs\\'" . typescript-ts-mode)
+  	 ("\\.mts\\'" . typescript-ts-mode)
+  	 ("\\.cjs\\'" . typescript-ts-mode)
+  	 ("\\.json\\'" . json-ts-mode)
+  	 ("\\.Dockerfile\\'" . dockerfile-ts-mode)
+  	 ("\\.php\\'" . php-ts-mode))
+    :preface
+        ;; Remap major modes to their Treesitter counterpart.
+        (dolist (mapping
+  	       '((css-mode . css-ts-mode)
+  		 (typescript-mode . typescript-ts-mode)
+  		 (js-mode . typescript-ts-mode)
+  		 (js2-mode . typescript-ts-mode)
+  		 (c-mode . c-ts-mode)
+  		 (c++-mode . c++-ts-mode)
+  		 (json-mode . json-ts-mode)
+  		 (php-mode . php-ts-mode)))
+  	(add-to-list 'major-mode-remap-alist mapping))
     :bind
     (
      ;; C-A move the point at the beginning of line text
@@ -216,7 +249,10 @@ Experimenting with `ef' themes beside core `modus' themes.
      :config
      (setq doom-themes-enable-bold t
            doom-themes-enable-italic t)
-     (load-theme 'doom-one-light t))
+     (load-theme 'doom-one-light t)
+     (custom-set-faces
+      ;; Customize variables face color.
+      `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'blue)))))))
 
   (use-package nerd-icons
     :ensure t)
@@ -337,7 +373,12 @@ files.
 Configuration file for anything related to programmation.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-prog.el"
-      ;;; -*- lexical-binding: t -*-
+  ;;; -*- lexical-binding: t -*-
+  ;; Turn on hl-line-mode when programming.
+  ;; Highlight the current line.
+  (use-package emacs
+    :hook
+    ((prog-mode . hl-line-mode)))
 
       ;; Install web-mode
       (use-package web-mode
@@ -351,25 +392,49 @@ Configuration file for anything related to programmation.
         :hook (
       	 (php-mode . jie-php-mode)))
 
-      ;; Configure PHP Tree Sitter mode
-      (use-package php-ts-mode
-        :hook (
-      	 (php-ts-mode . (lambda ()
-      			  (setq tab-width 4
-      				indent-tabs-mode nil)))))
+  ;; Install flymake-phpstan package.
+  ;; Provides phpstan reporting to flymake diagnostics.
+  (use-package flymake-phpstan
+    :ensure t
+    :hook
+  (php-mode #'flymake-phpstan-turn-on))
 
-      ;; Eglot -  LSP
-      ;; Intelephense for PHP
-      (use-package eglot
-        :config
-        (add-to-list 'eglot-server-programs
-                     '(php-mode . ("intelephense" "--stdio")))
-        :bind
-        (("C-, D" . eglot-find-declaration)
-         ("C-, i" . eglot-find-implementation)
-         ("C-, x" . eglot-code-actions)
-         ("<f7>" . eglot-format-buffer)
-         ("<f6>" . eglot-rename)))
+  ;; Configure PHP Tree Sitter mode
+  (use-package php-ts-mode
+    :hook (
+  	 (php-ts-mode . (lambda ()
+  			  (setq tab-width 4
+  				indent-tabs-mode nil)))))
+  ;; Configure sane indententation
+  (use-package emacs
+    :config
+    (setq-default electric-indent-inhibit t)
+    (setq tab-width 4
+          indent-tabs-mode nil
+          indent-line-function 'insert-tab
+          ))
+
+  ;; Configure indentation for Typescript
+  (use-package typescript-ts-mode
+    :config
+    (setq typescript-ts-mode-indent-offset 4))
+
+  ;; Eglot -  LSP
+  ;; Intelephense for PHP
+  (use-package eglot
+    :config
+    (add-to-list 'eglot-server-programs
+                 '(php-mode . ("intelephense" "--stdio")))
+    (add-to-list 'eglot-server-programs
+  	       '((typescript-mode) "typescript-language-server" "--stdio"))
+    (add-to-list 'eglot-server-programs
+  		 '(c-mode . ("clangd")))
+    :bind
+    (("C-, D" . eglot-find-declaration)
+     ("C-, i" . eglot-find-implementation)
+     ("C-, x" . eglot-code-actions)
+     ("<f7>" . eglot-format-buffer)
+     ("<f6>" . eglot-rename)))
 
       ;; Xref
       (use-package xref
@@ -430,7 +495,7 @@ elements on major modes.
     :ensure t
     :custom
     (vertico-cycle t)
-    (vertico-count 4)
+    (vertico-count 8)
     :init (vertico-mode))
 
   ;;; Use Marginalia package to add annotations on the minibuffer entries.

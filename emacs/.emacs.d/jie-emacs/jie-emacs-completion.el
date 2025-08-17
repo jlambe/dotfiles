@@ -12,7 +12,7 @@
   :ensure t
   :custom
   (vertico-cycle t)
-  (vertico-count 4)
+  (vertico-count 8)
   :init (vertico-mode))
 
 ;;; Use Marginalia package to add annotations on the minibuffer entries.
