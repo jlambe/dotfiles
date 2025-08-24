@@ -74,7 +74,12 @@
    ("C-S-e" . scroll-up-line)
 
    ;; C-6 keybinding to switch between two recent buffers
-   ("C-6" . mode-line-other-buffer))
+   ("C-6" . mode-line-other-buffer)
+
+   ;; C-<right> move forward to word
+   ;; Replace default word right keymap
+   ("C-<right>" . forward-to-word)
+   )
   :hook
   (
    ;; Use relative line numbers while working on code files.
