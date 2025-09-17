@@ -24,7 +24,7 @@
   ;; Default font for macos
   (when (string= system-type "darwin")
     (add-to-list 'default-frame-alist
-  	       '(font . "Menlo 16")))
+  	       '(font . "Menlo 13")))
 
   ;; Tree-sitter configuration
   (setq treesit-language-source-alist

@@ -32,6 +32,7 @@
 (setq vc-make-backup-files nil) ;; Disable backup if under version control
 
 ;; Emacs lisp functions.
+(require 'jie-lisp-common)
 (require 'jie-lisp-orgmode)
 (require 'jie-lisp-prog)
 

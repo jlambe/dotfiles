@@ -5,32 +5,39 @@
   :hook
   ((prog-mode . hl-line-mode)))
 
-    ;; Install web-mode
-    (use-package web-mode
-      :ensure t
-      :mode
-      (("\\.phtml\\'" . web-mode)))
+;; Install web-mode
+(use-package web-mode
+  :ensure t
+  :mode
+  (("\\.phtml\\'" . web-mode)))
 
-    ;; Install php-mode
-    (use-package php-mode
-      :ensure t
-      :hook (
+;; Install php-mode
+(use-package php-mode
+  :ensure t
+  :hook (
     	 (php-mode . jie-php-mode)))
 
 ;; Install flymake-phpstan package.
 ;; Provides phpstan reporting to flymake diagnostics.
 (use-package flymake-phpstan
   :ensure t
-  :hook
-(php-mode #'flymake-phpstan-turn-on))
+  :config
+  (add-hook 'php-ts-mode 'flymake-phpstan-turn-on))
 
 ;; Configure PHP Tree Sitter mode
+;; Keymap reference - Chapter 51 - Section 3: Customizing Key Bindings
+;; Note that "define-keymap" function is deprecated or mentioned as legacy
+;; and that it is better to leverage "keymap-set" functions.
 (use-package php-ts-mode
   :hook (
 	 (php-ts-mode . (lambda ()
 			  (setq tab-width 4
-				indent-tabs-mode nil)))))
-;; Configure sane indententation
+				indent-tabs-mode nil)))
+	 (flymake-mode . (lambda()
+			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
+			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
+	 ))
+;; Configure sane indentation
 (use-package emacs
   :config
   (setq-default electric-indent-inhibit t)
@@ -53,7 +60,7 @@
   (add-to-list 'eglot-server-programs
 	       '((typescript-mode) "typescript-language-server" "--stdio"))
   (add-to-list 'eglot-server-programs
-		 '(c-mode . ("clangd")))
+	       '(c-mode . ("clangd")))
   :bind
   (("C-, D" . eglot-find-declaration)
    ("C-, i" . eglot-find-implementation)
@@ -61,15 +68,15 @@
    ("<f7>" . eglot-format-buffer)
    ("<f6>" . eglot-rename)))
 
-    ;; Xref
-    (use-package xref
-      :bind
-      (("C-, ," . xref-go-back)
-       ("C-, d" . xref-find-definitions)
-       ("C-, r" . xref-find-references)))
+;; Xref
+(use-package xref
+  :bind
+  (("C-, ," . xref-go-back)
+   ("C-, d" . xref-find-definitions)
+   ("C-, r" . xref-find-references)))
 
-    ;; JSON and JSONC
-    (use-package json-mode
-      :ensure t)
+;; JSON and JSONC
+(use-package json-mode
+  :ensure t)
 
-    (provide 'jie-emacs-prog)
+(provide 'jie-emacs-prog)

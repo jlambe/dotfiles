@@ -119,6 +119,7 @@ Start loading the modules.
 
 #+begin_src emacs-lisp :tangle "init.el"
   ;; Emacs lisp functions.
+  (require 'jie-lisp-common)
   (require 'jie-lisp-orgmode)
   (require 'jie-lisp-prog)
 
@@ -141,8 +142,16 @@ Start loading the modules.
 These are common/shared emacs-lisp functions for usage in all the configuration
 files.
 
-#+begin_src emacs-lisp :tangle "jie-lisp/jie-common.el" :mkdirp yes
-  ;;; -*- lexical-binding: t -*-
+#+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-common.el" :mkdirp yes
+    ;;; -*- lexical-binding: t -*-
+    (defun jl-split-window-right-and-switch-to-prev-buffer ()
+      "Split window vertically and move current buffer to the right
+  and switch to previous buffer on selected window."
+      (interactive)
+      (split-window-right)
+      (switch-to-prev-buffer))
+
+  (provide 'jie-lisp-common)
 #+end_src
 
 * Modules
@@ -178,7 +187,7 @@ allocate them a full configuration file...
     ;; Default font for macos
     (when (string= system-type "darwin")
       (add-to-list 'default-frame-alist
-    	       '(font . "Menlo 16")))
+    	       '(font . "Menlo 13")))
 
     ;; Tree-sitter configuration
     (setq treesit-language-source-alist
@@ -284,13 +293,13 @@ to navigate opened windows using keys on the keyboard "home" row.
         (display-buffer-in-side-window)
         (window-height . 0.25)
         (side . bottom)
-        (slot . 1))
+        (slot . -1))
        ;; Display the eldoc buffer in bottom left side-window.
        ("\\*[Ee]ldoc\\*"
         (display-buffer-in-side-window)
         (window-height . 0.25)
         (side . bottom)
-        (slot . -1))))
+        (slot . 1))))
     :bind
     ;; Toggle on/off display of side windows while pressing the F8 function key.
     ("<f8>" . window-toggle-side-windows))
@@ -385,32 +394,39 @@ Configuration file for anything related to programmation.
     :hook
     ((prog-mode . hl-line-mode)))
 
-      ;; Install web-mode
-      (use-package web-mode
-        :ensure t
-        :mode
-        (("\\.phtml\\'" . web-mode)))
+  ;; Install web-mode
+  (use-package web-mode
+    :ensure t
+    :mode
+    (("\\.phtml\\'" . web-mode)))
 
-      ;; Install php-mode
-      (use-package php-mode
-        :ensure t
-        :hook (
+  ;; Install php-mode
+  (use-package php-mode
+    :ensure t
+    :hook (
       	 (php-mode . jie-php-mode)))
 
   ;; Install flymake-phpstan package.
   ;; Provides phpstan reporting to flymake diagnostics.
   (use-package flymake-phpstan
     :ensure t
-    :hook
-  (php-mode #'flymake-phpstan-turn-on))
+    :config
+    (add-hook 'php-ts-mode 'flymake-phpstan-turn-on))
 
   ;; Configure PHP Tree Sitter mode
+  ;; Keymap reference - Chapter 51 - Section 3: Customizing Key Bindings
+  ;; Note that "define-keymap" function is deprecated or mentioned as legacy
+  ;; and that it is better to leverage "keymap-set" functions.
   (use-package php-ts-mode
     :hook (
   	 (php-ts-mode . (lambda ()
   			  (setq tab-width 4
-  				indent-tabs-mode nil)))))
-  ;; Configure sane indententation
+  				indent-tabs-mode nil)))
+  	 (flymake-mode . (lambda()
+  			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
+  			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
+  	 ))
+  ;; Configure sane indentation
   (use-package emacs
     :config
     (setq-default electric-indent-inhibit t)
@@ -433,7 +449,7 @@ Configuration file for anything related to programmation.
     (add-to-list 'eglot-server-programs
   	       '((typescript-mode) "typescript-language-server" "--stdio"))
     (add-to-list 'eglot-server-programs
-  		 '(c-mode . ("clangd")))
+  	       '(c-mode . ("clangd")))
     :bind
     (("C-, D" . eglot-find-declaration)
      ("C-, i" . eglot-find-implementation)
@@ -441,18 +457,18 @@ Configuration file for anything related to programmation.
      ("<f7>" . eglot-format-buffer)
      ("<f6>" . eglot-rename)))
 
-      ;; Xref
-      (use-package xref
-        :bind
-        (("C-, ," . xref-go-back)
-         ("C-, d" . xref-find-definitions)
-         ("C-, r" . xref-find-references)))
+  ;; Xref
+  (use-package xref
+    :bind
+    (("C-, ," . xref-go-back)
+     ("C-, d" . xref-find-definitions)
+     ("C-, r" . xref-find-references)))
 
-      ;; JSON and JSONC
-      (use-package json-mode
-        :ensure t)
+  ;; JSON and JSONC
+  (use-package json-mode
+    :ensure t)
 
-      (provide 'jie-emacs-prog)
+  (provide 'jie-emacs-prog)
 #+end_src
 
 #+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-prog.el"
