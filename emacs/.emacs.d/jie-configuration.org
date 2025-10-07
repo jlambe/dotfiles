@@ -24,7 +24,7 @@ initialized.
 The regular =init.el= file is read after the GUI is initialized.
 
 ** Setup load paths
-Add the =~/.emacs.d/jie-lisp/= and =~/.emacs.d/jie-emacs/=
+Add the =~/.emacs.d/jl-lisp/= and =~/.emacs.d/jl-emacs/=
 directories to Emacs ~load-path~. Emacs will then automatically include all the
 ~.el~ files.
 
@@ -34,7 +34,7 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
   (mapc
     (lambda (relative-path)
       (add-to-list 'load-path (locate-user-emacs-file relative-path)))
-    '("jie-lisp" "jie-emacs"))
+    '("jie-lisp" "jie-emacs" "jl-lisp" "jl-emacs"))
 #+end_src
 
 ** Setup executable paths
@@ -153,6 +153,11 @@ files.
 
   (provide 'jie-lisp-common)
 #+end_src
+
+** SailAMX
+Utilities to help work on the SailAMX project.
+
+*** TODO Load sailamx custom package.
 
 * Modules
 ** Editor
@@ -459,7 +464,8 @@ Configuration file for anything related to programmation.
     :hook (
   	 (php-ts-mode . (lambda ()
   			  (setq tab-width 4
-  				indent-tabs-mode nil)))
+  				indent-tabs-mode nil
+  				indent-line-function 'insert-tab)))
   	 (flymake-mode . (lambda()
   			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
   			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
@@ -541,7 +547,7 @@ elements on major modes.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-completion.el"
   ;;; -*- lexical-binding: t -*-
-  
+
   ;;; Use the Oderless package to provide fuzzy find search style.
   (use-package orderless
     :ensure t
@@ -580,8 +586,45 @@ elements on major modes.
     (add-hook 'completion-at-point-functions #'cape-file)
     (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
+  ;;; Use Consult package
+  (use-package consult
+    :ensure t
+    :init
+    ;; Tweak the register preview for `consult-register-load',
+    ;; `consult-register-store' and the built-in commands.  This improves the
+    ;; register formatting, adds thin separator lines, register sorting and hides
+    ;; the window mode line.
+    (advice-add #'register-preview :override #'consult-register-window)
+    (setq register-preview-delay 0.5)
+
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+  	xref-show-definitions-function #'consult-xref)
+    :hook
+    (completion-list-mode . consult-preview-at-point-mode)
+    :bind
+    (
+     ;; C-x bindings in `ctl-x-map'
+     ("C-x b" . consult-buffer)
+     ("C-x 4 b" . consult-buffer-other-window)
+     ("C-x 5 b" . consult-buffer-other-frame)
+     ("C-x t b" . consult-buffer-other-tab)
+     ("C-x r b" . consult-bookmark)
+     ("C-x p b" . consult-project-buffer)
+     ;; Other custom bindings
+     ("M-y" . consult-yank-pop)
+     ;; M-g bindings in `goto-map'
+     ("M-g f" . consult-flymake)
+     ("M-g g" . consult-goto-line)
+     ("M-g M-g" . consult-goto-line)
+     ("M-g i" . consult-imenu)
+     ;; M-s bindings in `search-map'
+     ("M-s r" . consult-ripgrep)
+     ("M-s l" . consult-line)))
+
   (use-package popon
     :ensure t)
+
   ;; Only enables the package if on Emacs version < 31.
   (use-package corfu-terminal
     :ensure t
@@ -602,13 +645,25 @@ elements on major modes.
 #+end_src
 
 ** Skeletons
+*** Generic skeletons
+#+begin_src emacs-lisp :tangle "jl-emacs/jl-emacs-skeletons-generic.el" :mkdirp yes
+  ;;; -*- lexical-binding: t -*-
+  (define-skeleton jl-skeleton-generic-lexical-binding
+    "A generic skeleton to insert the lexical binding comment."
+    nil
+    ";;; -*- lexical-binding: t -*-"
+    \n)
+
+  (provide 'jl-emacs-skeletons-generic)
+#+end_src
+
 *** jie-skeleton-org-mode-code-block
 Generate an orgmode code block structure where you can specify the programming
 language as well as any additional headers.
 
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-skeletons.el"
   ;;; -*- lexical-binding: t -*-
-  
+
   (define-skeleton jie-skeleton-org-mode-code-block
     "A skeleton to generate an org-mode code block structure."
     "Code language: "
@@ -617,6 +672,35 @@ language as well as any additional headers.
     -
     \n
     "#+end_src")
+
+  ;; PHP - Skeletons
+  (define-skeleton jl-php-class-skeleton
+    "A skeleton to generate a PHP class code structure."
+    "PHP Class"
+    "<?php"
+    \n
+    \n
+    "namespace " ("Namespace: " str)
+    \n
+    \n
+    (car
+     (cdr
+      (read-multiple-choice "Insert: " '((?a "abstract class ") (?c "class ") (?i "interface ") (?t "trait "))))
+     )
+    ("Name: " str)
+    \n
+    "{"
+    \n
+    \n
+    -
+    "}"
+    )
+
+  (define-skeleton jl-explore-skeleton
+    "A skeleton to explore the API."
+    nil
+    (car(cdr(read-multiple-choice "Insert:" '((?a "abstract class") (?c "class")))))
+    -)
 
   (provide 'jie-emacs-skeletons)
 #+end_src
@@ -657,3 +741,4 @@ Handle configuration of the vterm package.
 
   (provide 'jie-emacs-vterm)
 #+end_src
+

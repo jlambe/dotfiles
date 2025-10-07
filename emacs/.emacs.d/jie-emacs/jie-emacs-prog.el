@@ -32,7 +32,8 @@
   :hook (
 	 (php-ts-mode . (lambda ()
 			  (setq tab-width 4
-				indent-tabs-mode nil)))
+				indent-tabs-mode nil
+				indent-line-function 'insert-tab)))
 	 (flymake-mode . (lambda()
 			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
 			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))

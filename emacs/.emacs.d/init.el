@@ -3,7 +3,7 @@
 (mapc
   (lambda (relative-path)
     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
-  '("jie-lisp" "jie-emacs"))
+  '("jie-lisp" "jie-emacs" "jl-lisp" "jl-emacs"))
 
 (use-package exec-path-from-shell
   :ensure t
