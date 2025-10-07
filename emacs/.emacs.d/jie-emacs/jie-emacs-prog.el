@@ -3,7 +3,12 @@
 ;; Highlight the current line.
 (use-package emacs
   :hook
-  ((prog-mode . hl-line-mode)))
+  ((prog-mode . hl-line-mode)
+   (prog-mode . (lambda()
+		  ;; Display file name (absolute) of currently visited
+		  ;; buffer in frame title bar (if supported by window manager)
+		  ;; when working in code source.
+		  (setq-local frame-title-format "%f")))))
 
 ;; Install web-mode
 (use-package web-mode
@@ -33,11 +38,14 @@
 	 (php-ts-mode . (lambda ()
 			  (setq tab-width 4
 				indent-tabs-mode nil
-				indent-line-function 'insert-tab)))
+				html-ts-mode-indent-offset 4
+				php-ts-mode-js-css-indent-offset 4
+				)))
 	 (flymake-mode . (lambda()
 			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
 			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
 	 ))
+
 ;; Configure sane indentation
 (use-package emacs
   :config

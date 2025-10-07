@@ -33,7 +33,7 @@
 	  (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile")
 	  (javascript "https://github.com/tree-sitter/tree-sitter-javascript")
 	  (json "https://github.com/tree-sitter/tree-sitter-json")
-	  (php "https://github.com/tree-sitter/tree-sitter-php" "v0.23.12" "php/src")
+	  (php "https://github.com/tree-sitter/tree-sitter-php" "v0.24.2" "php/src")
 	  (make "https://github.com/alemuller/tree-sitter-make")
 	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
 	  (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
