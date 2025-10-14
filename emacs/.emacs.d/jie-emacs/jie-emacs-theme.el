@@ -51,4 +51,9 @@
   (when grep-use-headings
     (nerd-icons-grep-mode 1)))
 
+(use-package rainbow-mode
+  :ensure t
+  :config
+  (rainbow-mode))
+
 (provide 'jie-emacs-theme)

@@ -127,6 +127,7 @@ Start loading the modules.
   (require 'jie-emacs-completion)
   (require 'jie-emacs-editor)
   (require 'jie-emacs-windows)
+  (require 'jl-emacs-comint)
   (require 'jie-emacs-orgmode)
   (require 'jie-emacs-writing)
   (require 'jie-emacs-prog)
@@ -314,6 +315,11 @@ Experimenting with `ef' themes beside core `modus' themes.
     (when grep-use-headings
       (nerd-icons-grep-mode 1)))
 
+  (use-package rainbow-mode
+    :ensure t
+    :config
+    (rainbow-mode))
+
   (provide 'jie-emacs-theme)
 #+end_src
 
@@ -358,6 +364,28 @@ to navigate opened windows using keys on the keyboard "home" row.
   	 ("C-S-k" . windmove-up)))
 
   (provide 'jie-emacs-windows)
+#+end_src
+
+** Command interpreters
+Configuration related to command interpreters in Emacs: compile,
+comint, processes, ...
+
+#+begin_src elisp :tangle "jl-emacs/jl-emacs-comint.el"
+  ;; Always make the "compile" command to run "interactively" instead of
+  ;; just displaying program output.
+  ;; There is no variable to toggle this automatically so we wrap the compile
+  ;; command with "defadvice".
+  ;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
+  ;; defadvice is deprecated, should be rewritten using "advice-add"
+  ;;(defadvice compile (before ad-compile-smart activate)
+  ;;  "Advises `compile' so it sets the argument COMINT to t."
+  ;;  (ad-set-arg 1 t))
+
+;;  (advice-add 'compile
+;;  	    :before (lambda (command)
+;;  		      (apply 'compile command t)))
+
+  (provide 'jl-emacs-comint)
 #+end_src
 
 ** Org-mode
@@ -508,6 +536,18 @@ Configuration file for anything related to programmation.
      ("C-, x" . eglot-code-actions)
      ("<f7>" . eglot-format-buffer)
      ("<f6>" . eglot-rename)))
+
+  ;; /!\ Missing "emacs-lsp-booster" RUST program in $PATH.
+  ;; - https://github.com/blahgeek/emacs-lsp-booster
+  ;;
+  ;; Eglot Booster
+  ;; Enhance performance between Emacs and LSP servers.
+  ;; Manually install using package-vc-install with repository URL:
+  ;; - "https://github.com/jdtsmith/eglot-booster"
+  ;;(use-package eglot-booster
+  ;;  :vc (:url "https://github.com/jdtsmith/eglot-booster")
+  ;;  :after eglot
+  ;;  :config (eglot-booster-mode))
 
   ;; Xref
   (use-package xref

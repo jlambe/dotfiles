@@ -77,6 +77,18 @@
    ("<f7>" . eglot-format-buffer)
    ("<f6>" . eglot-rename)))
 
+;; /!\ Missing "emacs-lsp-booster" RUST program in $PATH.
+;; - https://github.com/blahgeek/emacs-lsp-booster
+;;
+;; Eglot Booster
+;; Enhance performance between Emacs and LSP servers.
+;; Manually install using package-vc-install with repository URL:
+;; - "https://github.com/jdtsmith/eglot-booster"
+;;(use-package eglot-booster
+;;  :vc (:url "https://github.com/jdtsmith/eglot-booster")
+;;  :after eglot
+;;  :config (eglot-booster-mode))
+
 ;; Xref
 (use-package xref
   :bind

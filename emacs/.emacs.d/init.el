@@ -40,6 +40,7 @@
 (require 'jie-emacs-completion)
 (require 'jie-emacs-editor)
 (require 'jie-emacs-windows)
+(require 'jl-emacs-comint)
 (require 'jie-emacs-orgmode)
 (require 'jie-emacs-writing)
 (require 'jie-emacs-prog)
