@@ -1,15 +1,11 @@
-;; Always make the "compile" command to run "interactively" instead of
-  ;; just displaying program output.
-  ;; There is no variable to toggle this automatically so we wrap the compile
-  ;; command with "defadvice".
-  ;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
-  ;; defadvice is deprecated, should be rewritten using "advice-add"
-  ;;(defadvice compile (before ad-compile-smart activate)
-  ;;  "Advises `compile' so it sets the argument COMINT to t."
-  ;;  (ad-set-arg 1 t))
+;; Always make the "compile" command to run "interactively" instead of just displaying program output.
+;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
+(defun jl-advice-compile-interactive (original-function &rest args)
+  "Advice function for the `compile' command that sets
+its COMINT argument to t in order to run interactively."
+  (let ((command (car args)))
+    (apply original-function (list command t))))
 
-;;  (advice-add 'compile
-;;  	    :before (lambda (command)
-;;  		      (apply 'compile command t)))
+(advice-add #'compile :around #'jl-advice-compile-interactive)
 
-  (provide 'jl-emacs-comint)
+(provide 'jl-emacs-comint)

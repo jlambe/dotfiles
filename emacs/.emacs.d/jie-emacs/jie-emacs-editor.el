@@ -24,7 +24,7 @@
   ;; Default font for macos
   (when (string= system-type "darwin")
     (add-to-list 'default-frame-alist
-  	       '(font . "CodeNewRoman Nerd Font Mono 15")))
+  	       '(font . "0xProto Nerd Font Mono 14")))
 
   ;; Tree-sitter configuration
   (setq treesit-language-source-alist
@@ -38,7 +38,8 @@
 	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
 	  (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
 	  (c "https://github.com/tree-sitter/tree-sitter-c")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+	  (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
   :mode
       (
 	 ("\\.tsx\\'" . tsx-ts-mode)
@@ -50,7 +51,9 @@
 	 ("\\.cjs\\'" . typescript-ts-mode)
 	 ("\\.json\\'" . json-ts-mode)
 	 ("\\.Dockerfile\\'" . dockerfile-ts-mode)
-	 ("\\.php\\'" . php-ts-mode))
+	 ("\\.php\\'" . php-ts-mode)
+	 ("\\.yaml\\'" . yaml-ts-mode)
+	 ("\\.yml\\'" . yaml-ts-mode))
   :preface
       ;; Remap major modes to their Treesitter counterpart.
       (dolist (mapping

@@ -46,6 +46,10 @@
 			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
 	 ))
 
+;; Install composer.el package
+(use-package composer
+  :ensure t)
+
 ;; Configure sane indentation
 (use-package emacs
   :config

@@ -144,13 +144,22 @@ These are common/shared emacs-lisp functions for usage in all the configuration
 files.
 
 #+begin_src emacs-lisp :tangle "jie-lisp/jie-lisp-common.el" :mkdirp yes
-    ;;; -*- lexical-binding: t -*-
-    (defun jl-split-window-right-and-switch-to-prev-buffer ()
-      "Split window vertically and move current buffer to the right
+  ;;; -*- lexical-binding: t -*-
+  (defun jl-split-window-right-and-switch-to-prev-buffer ()
+    "Split window vertically and move current buffer to the right
   and switch to previous buffer on selected window."
-      (interactive)
-      (split-window-right)
-      (switch-to-prev-buffer))
+    (interactive)
+    (split-window-right)
+    (switch-to-prev-buffer))
+
+  (defun jl-file-absolute-path ()
+    "Show current buffer file path in minibuffer and automatically
+  copy it to the clipboard."
+    (interactive)
+    (let* ((path (buffer-file-name))
+  	 (name (file-truename path)))
+      ;; TODO - Copy file path to clipboard - copy perhaps relative path from project root
+      (message name)))
 
   (provide 'jie-lisp-common)
 #+end_src
@@ -193,7 +202,7 @@ allocate them a full configuration file...
     ;; Default font for macos
     (when (string= system-type "darwin")
       (add-to-list 'default-frame-alist
-    	       '(font . "CodeNewRoman Nerd Font Mono 15")))
+    	       '(font . "0xProto Nerd Font Mono 14")))
 
     ;; Tree-sitter configuration
     (setq treesit-language-source-alist
@@ -207,7 +216,8 @@ allocate them a full configuration file...
   	  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "typescript/src")
   	  (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "v0.23.2" "tsx/src")
   	  (c "https://github.com/tree-sitter/tree-sitter-c")
-            (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+  	  (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+  	  (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
     :mode
         (
   	 ("\\.tsx\\'" . tsx-ts-mode)
@@ -219,7 +229,9 @@ allocate them a full configuration file...
   	 ("\\.cjs\\'" . typescript-ts-mode)
   	 ("\\.json\\'" . json-ts-mode)
   	 ("\\.Dockerfile\\'" . dockerfile-ts-mode)
-  	 ("\\.php\\'" . php-ts-mode))
+  	 ("\\.php\\'" . php-ts-mode)
+  	 ("\\.yaml\\'" . yaml-ts-mode)
+  	 ("\\.yml\\'" . yaml-ts-mode))
     :preface
         ;; Remap major modes to their Treesitter counterpart.
         (dolist (mapping
@@ -277,7 +289,7 @@ Experimenting with `ef' themes beside core `modus' themes.
   (use-package nerd-icons
     :ensure t
     :custom
-    (nerd-icons-font-family "CodeNewRoman Nerd Font Mono"))
+    (nerd-icons-font-family "0xProto Nerd Font Mono"))
 
   (use-package nerd-icons-dired
     :ensure t
@@ -371,19 +383,15 @@ Configuration related to command interpreters in Emacs: compile,
 comint, processes, ...
 
 #+begin_src elisp :tangle "jl-emacs/jl-emacs-comint.el"
-  ;; Always make the "compile" command to run "interactively" instead of
-  ;; just displaying program output.
-  ;; There is no variable to toggle this automatically so we wrap the compile
-  ;; command with "defadvice".
+  ;; Always make the "compile" command to run "interactively" instead of just displaying program output.
   ;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
-  ;; defadvice is deprecated, should be rewritten using "advice-add"
-  ;;(defadvice compile (before ad-compile-smart activate)
-  ;;  "Advises `compile' so it sets the argument COMINT to t."
-  ;;  (ad-set-arg 1 t))
+  (defun jl-advice-compile-interactive (original-function &rest args)
+    "Advice function for the `compile' command that sets
+  its COMINT argument to t in order to run interactively."
+    (let ((command (car args)))
+      (apply original-function (list command t))))
 
-;;  (advice-add 'compile
-;;  	    :before (lambda (command)
-;;  		      (apply 'compile command t)))
+  (advice-add #'compile :around #'jl-advice-compile-interactive)
 
   (provide 'jl-emacs-comint)
 #+end_src
@@ -505,6 +513,10 @@ Configuration file for anything related to programmation.
   			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
   			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
   	 ))
+
+  ;; Install composer.el package
+  (use-package composer
+    :ensure t)
 
   ;; Configure sane indentation
   (use-package emacs
