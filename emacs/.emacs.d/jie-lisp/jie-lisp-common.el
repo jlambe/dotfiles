@@ -12,7 +12,8 @@ copy it to the clipboard."
   (interactive)
   (let* ((path (buffer-file-name))
 	 (name (file-truename path)))
-    ;; TODO - Copy file path to clipboard - copy perhaps relative path from project root
+    ;; TODO - Update to have the option to copy relative path from project root
+    (kill-new name)
     (message name)))
 
 (provide 'jie-lisp-common)
