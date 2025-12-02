@@ -17,7 +17,12 @@
       (display-buffer-in-side-window)
       (window-height . 0.25)
       (side . bottom)
-      (slot . 1))))
+      (slot . 1))
+     ;; Display magit status to its own tab.
+     ((derived-mode . magit-status-mode)
+      (display-buffer-reuse-mode-window display-buffer-in-tab)
+	(mode . magit-status-mode))
+     ))
   :bind
   ;; Toggle on/off display of side windows while pressing the F8 function key.
   ("<f8>" . window-toggle-side-windows))

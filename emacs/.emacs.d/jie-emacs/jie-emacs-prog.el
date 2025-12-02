@@ -57,7 +57,11 @@
   (setq tab-width 4
         indent-tabs-mode nil
         indent-line-function 'insert-tab
-        ))
+        )
+  :hook (
+	 (c-mode . (lambda ()
+		     (setq tab-width 4)))
+	     ))
 
 ;; Configure indentation for Typescript
 (use-package typescript-ts-mode

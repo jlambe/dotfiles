@@ -28,6 +28,13 @@
   (corfu-cycle t)
   :init
   (global-corfu-mode)
+  ;; c-mode completion fix
+  ;; Use TAB within c-mode to perform completion
+  ;; For what I understand, it maps "completion-at-point" on the current
+  ;; key TAB (replace default function).
+  ;; Disable this code snippet if c-mode does not behave normally.
+  (when (equal tab-always-indent 'complete)
+    (define-key c-mode-base-map [remap c-indent-line-or-region] #'completion-at-point))
   :config
   (add-hook 'corfu-mode-hook #'jie-init-corfu-terminal))
 

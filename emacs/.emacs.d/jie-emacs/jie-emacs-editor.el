@@ -53,7 +53,9 @@
 	 ("\\.Dockerfile\\'" . dockerfile-ts-mode)
 	 ("\\.php\\'" . php-ts-mode)
 	 ("\\.yaml\\'" . yaml-ts-mode)
-	 ("\\.yml\\'" . yaml-ts-mode))
+	 ("\\.yml\\'" . yaml-ts-mode)
+	 ("\\.c\\'" . c-ts-mode)
+	 ("\\.cpp\\'" . cpp-ts-mode))
   :preface
       ;; Remap major modes to their Treesitter counterpart.
       (dolist (mapping
