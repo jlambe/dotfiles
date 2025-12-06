@@ -355,22 +355,37 @@ to navigate opened windows using keys on the keyboard "home" row.
     :custom
     (display-buffer-alist
      '(
-       ;; Display the help and xref buffers in bottom right side-window.
+       ;; Display the help and xref buffers in bottom right side of the current frame.
        ("\\*\\([Hh]elp\\|xref\\)\\*"
         (display-buffer-in-side-window)
         (window-height . 0.25)
         (side . bottom)
         (slot . -1))
-       ;; Display the eldoc buffer in bottom left side-window.
+       ;; Display the eldoc buffer in bottom left side of the current frame.
        ("\\*[Ee]ldoc\\*"
         (display-buffer-in-side-window)
         (window-height . 0.25)
         (side . bottom)
         (slot . 1))
-       ;; Display magit status to its own tab.
+       ;; Display the info buffer on the right side of the current frame.
+       ("\\*[Ii]nfo\\*"
+  	(display-buffer-in-side-window)
+  	(window-width . 0.5)
+  	(side . right)
+  	(slot . 0))
+       ;; Display magit status to its own tab on the current frame.
        ((derived-mode . magit-status-mode)
         (display-buffer-reuse-mode-window display-buffer-in-tab)
-  	(mode . magit-status-mode))
+        (tab-name . (lambda (buffer _alist) (buffer-name buffer)))
+        (reusable-frames . :just-the-selected-frame)
+        (mode . magit-status-mode)
+        (inhibit-switch-frame . t))
+       ;; Display magit diff to the right side of the current frame.
+       ("magit-diff"
+  	(display-buffer-in-side-window)
+  	(window-width . 0.5)
+  	(side . right)
+  	(slot . 1))
        ))
     :bind
     ;; Toggle on/off display of side windows while pressing the F8 function key.
