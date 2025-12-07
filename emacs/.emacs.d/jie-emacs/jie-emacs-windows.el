@@ -6,8 +6,8 @@
   :custom
   (display-buffer-alist
    '(
-     ;; Display the help and xref buffers in bottom right side of the current frame.
-     ("\\*\\([Hh]elp\\|xref\\)\\*"
+     ;; Display the xref buffers in bottom right side of the current frame.
+     ("\\*xref\\*"
       (display-buffer-in-side-window)
       (window-height . 0.25)
       (side . bottom)
@@ -19,11 +19,17 @@
       (side . bottom)
       (slot . 1))
      ;; Display the info buffer on the right side of the current frame.
-     ("\\*[Ii]nfo\\*"
+     ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
 	(display-buffer-in-side-window)
 	(window-width . 0.5)
 	(side . right)
 	(slot . 0))
+     ;; Display "Apropos" buffer on the right side, bottom of the current frame.
+     ("\\*Apropos\\*"
+      (display-buffer-in-side-window)
+      (window-width . 0.5)
+      (side . right)
+      (slot . 1))
      ;; Display magit status to its own tab on the current frame.
      ((derived-mode . magit-status-mode)
       (display-buffer-reuse-mode-window display-buffer-in-tab)
