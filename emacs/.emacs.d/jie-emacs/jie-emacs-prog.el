@@ -8,7 +8,10 @@
 		  ;; Display file name (absolute) of currently visited
 		  ;; buffer in frame title bar (if supported by window manager)
 		  ;; when working in code source.
-		  (setq-local frame-title-format "%f")))))
+		  (setq-local frame-title-format "%f")
+		  ;;; Show trailing whitespaces
+		  (setq-local show-trailing-whitespace t)
+		  ))))
 
 ;; Install web-mode
 (use-package web-mode

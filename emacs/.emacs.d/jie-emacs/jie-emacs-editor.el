@@ -17,8 +17,6 @@
   (setq scroll-preserve-screen-position t)
   ;;; Number of lines of continuity when scrolling by screenfuls.
   (setq next-screen-context-lines 8)
-  ;;; Show trailing whitespaces
-  (setq show-trailing-whitespace t)
 
   ;; Disable tool bar
   (tool-bar-mode -1)
@@ -86,6 +84,9 @@
    ;; C-<right> move forward to word
    ;; Replace default word right keymap
    ("C-<right>" . forward-to-word)
+
+   ;; C-c C-t open vterm
+   ("C-x C-t" . vterm)
    )
   :hook
   (

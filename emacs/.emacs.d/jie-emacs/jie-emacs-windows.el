@@ -30,6 +30,16 @@
       (window-width . 0.5)
       (side . right)
       (slot . 1))
+     ;; Display vterm to its own tab.
+     ("\\*vterm\\*"
+      (display-buffer-reuse-window display-buffer-in-tab)
+      (tab-name . "*vterm*")
+      (reusable-frames . :just-the-selected-frame)
+      (inhibit-switch-frame . t))
+     ;; Display SQL: MySQL in current window using full frame.
+     ;; Just to test, might still want to move it to its own tab later on.
+     ("\\*SQL: MySQL\\*"
+      (display-buffer-reuse-window display-buffer-full-frame))
      ;; Display magit status to its own tab on the current frame.
      ((derived-mode . magit-status-mode)
       (display-buffer-reuse-mode-window display-buffer-in-tab)
