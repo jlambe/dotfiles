@@ -199,6 +199,8 @@ allocate them a full configuration file...
     (setq scroll-preserve-screen-position t)
     ;;; Number of lines of continuity when scrolling by screenfuls.
     (setq next-screen-context-lines 8)
+    ;;; Automatically add newlines if moving to next-line at end of buffer.
+    (setq next-line-add-newlines t)
 
     ;; Disable tool bar
     (tool-bar-mode -1)
@@ -367,19 +369,19 @@ to navigate opened windows using keys on the keyboard "home" row.
        ;; Display the eldoc buffer in bottom left side of the current frame.
        ("\\*[Ee]ldoc\\*"
         (display-buffer-in-side-window)
-        (window-height . 0.25)
-        (side . bottom)
+        (window-width . 0.33)
+        (side . right)
         (slot . 1))
        ;; Display the info buffer on the right side of the current frame.
        ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
   	(display-buffer-in-side-window)
-  	(window-width . 0.5)
+  	(window-width . 0.33)
   	(side . right)
   	(slot . 0))
        ;; Display "Apropos" buffer on the right side, bottom of the current frame.
        ("\\*Apropos\\*"
         (display-buffer-in-side-window)
-        (window-width . 0.5)
+        (window-width . 0.33)
         (side . right)
         (slot . 1))
        ;; Display vterm to its own tab.

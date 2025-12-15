@@ -17,6 +17,8 @@
   (setq scroll-preserve-screen-position t)
   ;;; Number of lines of continuity when scrolling by screenfuls.
   (setq next-screen-context-lines 8)
+  ;;; Automatically add newlines if moving to next-line at end of buffer.
+  (setq next-line-add-newlines t)
 
   ;; Disable tool bar
   (tool-bar-mode -1)

@@ -15,19 +15,19 @@
      ;; Display the eldoc buffer in bottom left side of the current frame.
      ("\\*[Ee]ldoc\\*"
       (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
+      (window-width . 0.33)
+      (side . right)
       (slot . 1))
      ;; Display the info buffer on the right side of the current frame.
      ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
 	(display-buffer-in-side-window)
-	(window-width . 0.5)
+	(window-width . 0.33)
 	(side . right)
 	(slot . 0))
      ;; Display "Apropos" buffer on the right side, bottom of the current frame.
      ("\\*Apropos\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.5)
+      (window-width . 0.33)
       (side . right)
       (slot . 1))
      ;; Display vterm to its own tab.
