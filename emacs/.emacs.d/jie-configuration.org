@@ -77,6 +77,15 @@ Quelpa allows the installation of Emacs packages directly from source.
     :ensure t)
 #+end_src
 
+** Customization custom file
+Setup user customizations to be saved and loaded from a separate file
+instead of using the default init.el file:
+
+#+begin_src emacs-lisp :tangle "init.el"
+  (setq custom-file (locate-user-emacs-file "custom.el"))
+  (load custom-file)
+#+end_src
+
 ** Default startup buffer
 When opening Emacs, display the =*scratch*= buffer by default.
 
@@ -271,6 +280,12 @@ allocate them a full configuration file...
 
      ;; C-c C-t open vterm
      ("C-x C-t" . vterm)
+
+     ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
+     ("C-c d" . duplicate-dwim)
+     ;; Use ibuffer as default buffer browser
+     ;; [..] is a "vector"
+     ([remap list-buffers] . ibuffer)
      )
     :hook
     (

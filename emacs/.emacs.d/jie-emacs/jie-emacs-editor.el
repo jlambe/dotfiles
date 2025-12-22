@@ -89,6 +89,12 @@
 
    ;; C-c C-t open vterm
    ("C-x C-t" . vterm)
+
+   ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
+   ("C-c d" . duplicate-dwim)
+   ;; Use ibuffer as default buffer browser
+   ;; [..] is a "vector"
+   ([remap list-buffers] . ibuffer)
    )
   :hook
   (

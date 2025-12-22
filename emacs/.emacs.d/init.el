@@ -16,6 +16,9 @@
 (use-package quelpa
   :ensure t)
 
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file)
+
 (setq initial-buffer-choice t)
 
 ;;; When working on macos, keep the right option key as the meta modifier
