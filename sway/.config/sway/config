@@ -43,7 +43,7 @@ default_border pixel 2
 # Dell U4021QW
 output HDMI-A-1 {
     mode 2560x1080
-    scale 1.5
+    scale 1.0
 } 
 
 ### Idle configuration
