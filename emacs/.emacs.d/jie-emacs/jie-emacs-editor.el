@@ -72,6 +72,9 @@
 	(add-to-list 'major-mode-remap-alist mapping))
   :bind
   (
+   ;; C-z to undo
+   ("C-z" . undo)
+   
    ;; C-A move the point at the beginning of line text
    ("C-S-a" . beginning-of-line-text)
 

@@ -1,5 +1,4 @@
 ;;; -*- lexical-binding: t -*-
-
 (use-package window
   :config
   (setq switch-to-buffer-obey-display-actions t)
@@ -15,25 +14,24 @@
      ;; Display the eldoc buffer in bottom left side of the current frame.
      ("\\*[Ee]ldoc\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.33)
+      (window-width . (jl-get-width-ratio 0.33 0.5))
       (side . right)
       (slot . 1))
      ;; Display the info buffer on the right side of the current frame.
      ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
 	(display-buffer-in-side-window)
-	(window-width . 0.33)
+	(window-width . (jl-get-width-ratio 0.33 0.5))
 	(side . right)
 	(slot . 0))
      ;; Display "Apropos" buffer on the right side, bottom of the current frame.
      ("\\*Apropos\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.33)
+      (window-width . (jl-get-width-ratio 0.33 0.5))
       (side . right)
       (slot . 1))
      ;; Display vterm to its own tab.
      ("\\*vterm\\*"
       (display-buffer-reuse-window display-buffer-in-tab)
-      (tab-name . "*vterm*")
       (reusable-frames . :just-the-selected-frame)
       (inhibit-switch-frame . t))
      ;; Display SQL: MySQL in current window using full frame.
@@ -43,7 +41,6 @@
      ;; Display magit status to its own tab on the current frame.
      ((derived-mode . magit-status-mode)
       (display-buffer-reuse-mode-window display-buffer-in-tab)
-      (tab-name . (lambda (buffer _alist) (buffer-name buffer)))
       (reusable-frames . :just-the-selected-frame)
       (mode . magit-status-mode)
       (inhibit-switch-frame . t))
