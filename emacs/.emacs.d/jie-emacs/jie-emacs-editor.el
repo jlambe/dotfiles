@@ -26,7 +26,7 @@
   ;; Default font for macos
   (when (string= system-type "darwin")
     (add-to-list 'default-frame-alist
-  	       '(font . "0xProto Nerd Font Mono 14")))
+  	       '(font . "0xProto Nerd Font Mono 12")))
 
   ;; Tree-sitter configuration
   (setq treesit-language-source-alist
@@ -95,6 +95,10 @@
 
    ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
    ("C-c d" . duplicate-dwim)
+
+   ;; Comment/Uncomment region
+   ("C-S-c" . comment-or-uncomment-region)
+
    ;; Use ibuffer as default buffer browser
    ;; [..] is a "vector"
    ([remap list-buffers] . ibuffer)

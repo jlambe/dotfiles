@@ -35,6 +35,10 @@ directories to Emacs ~load-path~. Emacs will then automatically include all the
     (lambda (relative-path)
       (add-to-list 'load-path (locate-user-emacs-file relative-path)))
     '("jie-lisp" "jie-emacs" "jl-lisp" "jl-emacs"))
+
+  ;; Add sailamx Emacs utilites project
+  (when (string= system-type "darwin")
+    (add-to-list 'load-path (directory-file-name "/Volumes/Materia/dev/emacs-packages/sailamx")))
 #+end_src
 
 ** Setup executable paths
@@ -136,16 +140,22 @@ Start loading the modules.
   (require 'jie-emacs-completion)
   (require 'jie-emacs-editor)
   (require 'jie-emacs-windows)
+  (require 'jl-emacs-dired)
   (require 'jl-emacs-comint)
   (require 'jie-emacs-orgmode)
   (require 'jie-emacs-writing)
   (require 'jie-emacs-prog)
+  (require 'jl-emacs-editorconfig)
   (require 'jie-emacs-theme)
   (require 'jie-emacs-skeletons)
   (require 'jie-emacs-vc)
   (require 'jie-emacs-vterm)
   (require 'jie-emacs-bindings)
   (require 'jl-emacs-reading)
+
+  ;; Custom utilities.
+  (when (string= system-type "darwin")
+    (require 'sailamx))
 #+end_src
 
 * Lisp
@@ -167,25 +177,8 @@ files.
           (Kill-new path)
         (kill-new relative-path))))
 
-  (defun jl-current-frame-width ()
-    "Get the current frame width in pixels."
-    (interactive)
-    (frame-native-width))
-
-  (defun jl-get-width-ratio (desired-ratio fallback-ratio)
-    "Return the DESIRED-RATIO width if current frame width
-  is equal or larger than 1920 pixels, the FALLBACK-RATIO otherwise."
-    (if (>= (jl-current-frame-width) 1920)
-        desired-ratio
-      fallback-ratio))
-
   (provide 'jie-lisp-common)
 #+end_src
-
-** SailAMX
-Utilities to help work on the SailAMX project.
-
-*** TODO Load sailamx custom package.
 
 * Modules
 ** Editor
@@ -222,7 +215,7 @@ allocate them a full configuration file...
     ;; Default font for macos
     (when (string= system-type "darwin")
       (add-to-list 'default-frame-alist
-    	       '(font . "0xProto Nerd Font Mono 14")))
+    	       '(font . "0xProto Nerd Font Mono 12")))
 
     ;; Tree-sitter configuration
     (setq treesit-language-source-alist
@@ -291,6 +284,10 @@ allocate them a full configuration file...
 
      ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
      ("C-c d" . duplicate-dwim)
+
+     ;; Comment/Uncomment region
+     ("C-S-c" . comment-or-uncomment-region)
+
      ;; Use ibuffer as default buffer browser
      ;; [..] is a "vector"
      ([remap list-buffers] . ibuffer)
@@ -378,7 +375,10 @@ to navigate opened windows using keys on the keyboard "home" row.
   ;;; -*- lexical-binding: t -*-
   (use-package window
     :config
-    (setq switch-to-buffer-obey-display-actions t)
+    (setq switch-to-buffer-obey-display-actions t
+  	window-combination-resize t
+  	;; Force "other-window" related functions to never split on vertical axis.
+  	split-height-threshold nil)
     :custom
     (display-buffer-alist
      `(
@@ -391,19 +391,19 @@ to navigate opened windows using keys on the keyboard "home" row.
        ;; Display the eldoc buffer in bottom left side of the current frame.
        ("\\*[Ee]ldoc\\*"
         (display-buffer-in-side-window)
-        (window-width . ,(jl-get-width-ratio 0.33 0.5))
+        (window-width . 0.33)
         (side . right)
         (slot . 1))
        ;; Display the info buffer on the right side of the current frame.
        ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
   	(display-buffer-in-side-window)
-  	(window-width . ,(jl-get-width-ratio 0.33 0.5))
+  	(window-width . 0.33)
   	(side . right)
   	(slot . 0))
        ;; Display "Apropos" buffer on the right side, bottom of the current frame.
        ("\\*Apropos\\*"
         (display-buffer-in-side-window)
-        (window-width . ,(jl-get-width-ratio 0.33 0.5))
+        (window-width . 0.33)
         (side . right)
         (slot . 1))
        ;; Display vterm to its own tab.
@@ -443,6 +443,32 @@ to navigate opened windows using keys on the keyboard "home" row.
   	 ("C-S-k" . windmove-up)))
 
   (provide 'jie-emacs-windows)
+#+end_src
+
+** Dired
+
+#+begin_src elisp :tangle "jl-emacs/jl-emacs-dired.el"
+  ;;; -*- lexical-binding: t -*-
+
+  (use-package dired
+    :hook
+    ((dired-mode . dired-hide-details-mode)))
+
+  ;; This package provides additional font locks in Dired mode (prettier UI basically).
+  ;; https://github.com/purcell/diredfl
+  (use-package diredfl
+    :ensure t
+    :config
+    (diredfl-global-mode))
+
+  (use-package dired-git-info
+    :ensure t
+    :bind
+    (
+     :map dired-mode-map
+  	(")" . dired-git-info-mode)))
+
+  (provide 'jl-emacs-dired)
 #+end_src
 
 ** Command interpreters
@@ -660,6 +686,19 @@ Configuration file for anything related to programmation.
         (setq-local show-trailing-whitespace 1)))
 
   (provide 'jie-lisp-prog)
+#+end_src
+
+** Editorconfig
+
+#+begin_src emacs-lisp :tangle "jl-emacs/jl-emacs-editorconfig.el"
+  ;;; -*- lexical-binding: t -*-
+
+  (use-package editorconfig
+    :ensure t
+    :config
+    (editorconfig-mode 1))
+
+  (provide 'jl-emacs-editorconfig)
 #+end_src
 
 ** Completion
@@ -894,3 +933,6 @@ Handle configuration of the vterm package.
 
   (provide 'jl-emacs-reading)
 #+end_src
+
+
+

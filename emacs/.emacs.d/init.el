@@ -5,6 +5,10 @@
     (add-to-list 'load-path (locate-user-emacs-file relative-path)))
   '("jie-lisp" "jie-emacs" "jl-lisp" "jl-emacs"))
 
+;; Add sailamx Emacs utilites project
+(when (string= system-type "darwin")
+  (add-to-list 'load-path (directory-file-name "/Volumes/Materia/dev/emacs-packages/sailamx")))
+
 (use-package exec-path-from-shell
   :ensure t
   :if (memq window-system '(mac ns x))
@@ -43,13 +47,19 @@
 (require 'jie-emacs-completion)
 (require 'jie-emacs-editor)
 (require 'jie-emacs-windows)
+(require 'jl-emacs-dired)
 (require 'jl-emacs-comint)
 (require 'jie-emacs-orgmode)
 (require 'jie-emacs-writing)
 (require 'jie-emacs-prog)
+(require 'jl-emacs-editorconfig)
 (require 'jie-emacs-theme)
 (require 'jie-emacs-skeletons)
 (require 'jie-emacs-vc)
 (require 'jie-emacs-vterm)
 (require 'jie-emacs-bindings)
 (require 'jl-emacs-reading)
+
+;; Custom utilities.
+(when (string= system-type "darwin")
+  (require 'sailamx))

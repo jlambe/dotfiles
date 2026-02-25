@@ -1,10 +1,13 @@
 ;;; -*- lexical-binding: t -*-
 (use-package window
   :config
-  (setq switch-to-buffer-obey-display-actions t)
+  (setq switch-to-buffer-obey-display-actions t
+	window-combination-resize t
+	;; Force "other-window" related functions to never split on vertical axis.
+	split-height-threshold nil)
   :custom
   (display-buffer-alist
-   '(
+   `(
      ;; Display the xref buffers in bottom right side of the current frame.
      ("\\*xref\\*"
       (display-buffer-in-side-window)
@@ -14,19 +17,19 @@
      ;; Display the eldoc buffer in bottom left side of the current frame.
      ("\\*[Ee]ldoc\\*"
       (display-buffer-in-side-window)
-      (window-width . (jl-get-width-ratio 0.33 0.5))
+      (window-width . 0.33)
       (side . right)
       (slot . 1))
      ;; Display the info buffer on the right side of the current frame.
      ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
 	(display-buffer-in-side-window)
-	(window-width . (jl-get-width-ratio 0.33 0.5))
+	(window-width . 0.33)
 	(side . right)
 	(slot . 0))
      ;; Display "Apropos" buffer on the right side, bottom of the current frame.
      ("\\*Apropos\\*"
       (display-buffer-in-side-window)
-      (window-width . (jl-get-width-ratio 0.33 0.5))
+      (window-width . 0.33)
       (side . right)
       (slot . 1))
      ;; Display vterm to its own tab.
