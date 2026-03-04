@@ -147,6 +147,7 @@ Start loading the modules.
   (require 'jie-emacs-prog)
   (require 'jl-emacs-editorconfig)
   (require 'jie-emacs-theme)
+  (require 'jl-emacs-yasnippet)
   (require 'jie-emacs-skeletons)
   (require 'jie-emacs-vc)
   (require 'jie-emacs-vterm)
@@ -259,6 +260,12 @@ allocate them a full configuration file...
   		 (json-mode . json-ts-mode)
   		 (php-mode . php-ts-mode)))
   	(add-to-list 'major-mode-remap-alist mapping))
+    :custom
+    ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+    ;; to switch display modes.
+    (context-menu-mode t)
+    ;; Support opening new minibuffers from inside existing minibuffers.
+    (enable-recursive-minibuffers t)
     :bind
     (
      ;; C-z to undo
@@ -284,6 +291,7 @@ allocate them a full configuration file...
 
      ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
      ("C-c d" . duplicate-dwim)
+     ("C-c C-d" . duplicate-dwim)
 
      ;; Comment/Uncomment region
      ("C-S-c" . comment-or-uncomment-region)
@@ -383,9 +391,9 @@ to navigate opened windows using keys on the keyboard "home" row.
     (display-buffer-alist
      `(
        ;; Display the xref buffers in bottom right side of the current frame.
+       ;; Height is controlled by the number of "Vertico" items.
        ("\\*xref\\*"
         (display-buffer-in-side-window)
-        (window-height . 0.25)
         (side . bottom)
         (slot . -1))
        ;; Display the eldoc buffer in bottom left side of the current frame.
@@ -408,9 +416,11 @@ to navigate opened windows using keys on the keyboard "home" row.
         (slot . 1))
        ;; Display vterm to its own tab.
        ("\\*vterm\\*"
-        (display-buffer-reuse-window display-buffer-in-tab)
-        (reusable-frames . :just-the-selected-frame)
-        (inhibit-switch-frame . t))
+        (display-buffer-in-side-window)
+        (side . bottom)
+        (window-height . 0.5)
+        (slot . -2)
+        (reusable-frames . :just-the-selected-frame))
        ;; Display SQL: MySQL in current window using full frame.
        ;; Just to test, might still want to move it to its own tab later on.
        ("\\*SQL: MySQL\\*"
@@ -563,8 +573,12 @@ Configuration file for anything related to programmation.
   ;; Turn on hl-line-mode when programming.
   ;; Highlight the current line.
   (use-package emacs
+    :custom
+    ;; Only highlight on current/active buffer
+    (hl-line-sticky-flag nil)
     :hook
     ((prog-mode . hl-line-mode)
+     (prog-mode . electric-pair-mode)
      (prog-mode . (lambda()
   		  ;; Display file name (absolute) of currently visited
   		  ;; buffer in frame title bar (if supported by window manager)
@@ -572,7 +586,13 @@ Configuration file for anything related to programmation.
   		  (setq-local frame-title-format "%f")
   		  ;;; Show trailing whitespaces
   		  (setq-local show-trailing-whitespace t)
-  		  ))))
+  		  ))
+     (prog-mode . (lambda()
+  		  ;; Custom TODO font-lock/custom face
+  		  ;; Display colored face on TODO comments.
+  		  (font-lock-add-keywords nil
+  			'(("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)))
+  		))))
 
   ;; Install web-mode
   (use-package web-mode
@@ -647,7 +667,10 @@ Configuration file for anything related to programmation.
      ("C-, i" . eglot-find-implementation)
      ("C-, x" . eglot-code-actions)
      ("<f7>" . eglot-format-buffer)
-     ("<f6>" . eglot-rename)))
+     ("<f6>" . eglot-rename))
+    :hook
+    ((php-ts-mode . eglot-ensure)
+   (tsx-ts-mode . eglot-ensure)))
 
   ;; /!\ Missing "emacs-lsp-booster" RUST program in $PATH.
   ;; - https://github.com/blahgeek/emacs-lsp-booster
@@ -665,7 +688,7 @@ Configuration file for anything related to programmation.
   (use-package xref
     :bind
     (("C-, ," . xref-go-back)
-     ("C-, d" . xref-find-definitions)
+     ("C-, d" . xref-find-definitions-other-window)
      ("C-, r" . xref-find-references)))
 
   ;; JSON and JSONC
@@ -726,14 +749,15 @@ elements on major modes.
     :ensure t
     :custom
     (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion)))))
+    (completion-category-overrides '((file (styles basic partial-completion))))
+    )
 
   ;;; Use the Vertico package to get vertical minibuffer UI.
   (use-package vertico
     :ensure t
     :custom
     (vertico-cycle t)
-    (vertico-count 8)
+    (vertico-count 16)
     :init (vertico-mode))
 
   ;;; Use Marginalia package to add annotations on the minibuffer entries.
@@ -749,6 +773,11 @@ elements on major modes.
     (corfu-cycle t)
     :init
     (global-corfu-mode)
+
+    (setq completion-category-overrides '((eglot (styles orderless))
+  					(eglot-capf (styles orderless))))
+    
+    (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
     ;; c-mode completion fix
     ;; Use TAB within c-mode to perform completion
     ;; For what I understand, it maps "completion-at-point" on the current
@@ -762,6 +791,9 @@ elements on major modes.
   ;;; Add Capfs capabilites
   (use-package cape
     :init
+    ;; This one is important, makes eglot completion "full"
+    (add-hook 'completion-at-point-functions #'eglot-completion-at-point)
+    (add-hook 'completion-at-point-functions #'cape-keyword)
     (add-hook 'completion-at-point-functions #'cape-dabbrev)
     (add-hook 'completion-at-point-functions #'cape-file)
     (add-hook 'completion-at-point-functions #'cape-elisp-block))
@@ -822,6 +854,30 @@ elements on major modes.
     (tab-always-indent 'complete))
 
   (provide 'jie-emacs-completion)
+#+end_src
+
+** Yasnippet
+
+#+begin_src emacs-lisp :tangle "jl-emacs/jl-emacs-yasnippet.el"
+  ;;; -*- lexical-binding: t -*-
+  (use-package yasnippet
+    :ensure t
+    :config
+    (yas-reload-all)
+    :hook
+    ((prog-mode . yas-minor-mode)))
+
+  ;; https://github.com/elken/yasnippet-capf
+  ;; Add completion at point function to expand yasnippets in buffer.
+  ;; This is required as I'm using `cape with `corfu to handle completion
+  ;; inside buffers.
+  (use-package yasnippet-capf
+    :ensure t
+    :after cape
+    :config
+    (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+
+  (provide 'jl-emacs-yasnippet)
 #+end_src
 
 ** Skeletons
@@ -933,6 +989,15 @@ Handle configuration of the vterm package.
 
   (provide 'jl-emacs-reading)
 #+end_src
+
+
+
+
+
+
+
+
+
 
 
 

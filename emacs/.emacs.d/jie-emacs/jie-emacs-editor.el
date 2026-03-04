@@ -70,6 +70,12 @@
 		 (json-mode . json-ts-mode)
 		 (php-mode . php-ts-mode)))
 	(add-to-list 'major-mode-remap-alist mapping))
+  :custom
+  ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+  ;; to switch display modes.
+  (context-menu-mode t)
+  ;; Support opening new minibuffers from inside existing minibuffers.
+  (enable-recursive-minibuffers t)
   :bind
   (
    ;; C-z to undo
@@ -95,6 +101,7 @@
 
    ;; C-c d duplicate-dwim: duplicate line or region N times (default 1)
    ("C-c d" . duplicate-dwim)
+   ("C-c C-d" . duplicate-dwim)
 
    ;; Comment/Uncomment region
    ("C-S-c" . comment-or-uncomment-region)

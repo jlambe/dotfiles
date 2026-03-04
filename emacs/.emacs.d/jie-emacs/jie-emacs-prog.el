@@ -2,8 +2,12 @@
 ;; Turn on hl-line-mode when programming.
 ;; Highlight the current line.
 (use-package emacs
+  :custom
+  ;; Only highlight on current/active buffer
+  (hl-line-sticky-flag nil)
   :hook
   ((prog-mode . hl-line-mode)
+   (prog-mode . electric-pair-mode)
    (prog-mode . (lambda()
 		  ;; Display file name (absolute) of currently visited
 		  ;; buffer in frame title bar (if supported by window manager)
@@ -11,7 +15,13 @@
 		  (setq-local frame-title-format "%f")
 		  ;;; Show trailing whitespaces
 		  (setq-local show-trailing-whitespace t)
-		  ))))
+		  ))
+   (prog-mode . (lambda()
+		  ;; Custom TODO font-lock/custom face
+		  ;; Display colored face on TODO comments.
+		  (font-lock-add-keywords nil
+			'(("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)))
+		))))
 
 ;; Install web-mode
 (use-package web-mode
@@ -86,7 +96,10 @@
    ("C-, i" . eglot-find-implementation)
    ("C-, x" . eglot-code-actions)
    ("<f7>" . eglot-format-buffer)
-   ("<f6>" . eglot-rename)))
+   ("<f6>" . eglot-rename))
+  :hook
+  ((php-ts-mode . eglot-ensure)
+ (tsx-ts-mode . eglot-ensure)))
 
 ;; /!\ Missing "emacs-lsp-booster" RUST program in $PATH.
 ;; - https://github.com/blahgeek/emacs-lsp-booster
@@ -104,7 +117,7 @@
 (use-package xref
   :bind
   (("C-, ," . xref-go-back)
-   ("C-, d" . xref-find-definitions)
+   ("C-, d" . xref-find-definitions-other-window)
    ("C-, r" . xref-find-references)))
 
 ;; JSON and JSONC

@@ -5,14 +5,15 @@
   :ensure t
   :custom
   (completion-styles '(orderless basic))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  (completion-category-overrides '((file (styles basic partial-completion))))
+  )
 
 ;;; Use the Vertico package to get vertical minibuffer UI.
 (use-package vertico
   :ensure t
   :custom
   (vertico-cycle t)
-  (vertico-count 8)
+  (vertico-count 16)
   :init (vertico-mode))
 
 ;;; Use Marginalia package to add annotations on the minibuffer entries.
@@ -28,6 +29,11 @@
   (corfu-cycle t)
   :init
   (global-corfu-mode)
+
+  (setq completion-category-overrides '((eglot (styles orderless))
+					(eglot-capf (styles orderless))))
+  
+  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
   ;; c-mode completion fix
   ;; Use TAB within c-mode to perform completion
   ;; For what I understand, it maps "completion-at-point" on the current
@@ -41,6 +47,9 @@
 ;;; Add Capfs capabilites
 (use-package cape
   :init
+  ;; This one is important, makes eglot completion "full"
+  (add-hook 'completion-at-point-functions #'eglot-completion-at-point)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
   (add-hook 'completion-at-point-functions #'cape-dabbrev)
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-elisp-block))

@@ -54,6 +54,7 @@
 (require 'jie-emacs-prog)
 (require 'jl-emacs-editorconfig)
 (require 'jie-emacs-theme)
+(require 'jl-emacs-yasnippet)
 (require 'jie-emacs-skeletons)
 (require 'jie-emacs-vc)
 (require 'jie-emacs-vterm)

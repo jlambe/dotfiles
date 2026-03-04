@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: __constructor()
+# key: __con
+# --
+${1:$$(yas-choose-value '("public" "private"))} function __construct($2)
+{$0}

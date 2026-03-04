@@ -9,9 +9,9 @@
   (display-buffer-alist
    `(
      ;; Display the xref buffers in bottom right side of the current frame.
+     ;; Height is controlled by the number of "Vertico" items.
      ("\\*xref\\*"
       (display-buffer-in-side-window)
-      (window-height . 0.25)
       (side . bottom)
       (slot . -1))
      ;; Display the eldoc buffer in bottom left side of the current frame.
@@ -34,9 +34,11 @@
       (slot . 1))
      ;; Display vterm to its own tab.
      ("\\*vterm\\*"
-      (display-buffer-reuse-window display-buffer-in-tab)
-      (reusable-frames . :just-the-selected-frame)
-      (inhibit-switch-frame . t))
+      (display-buffer-in-side-window)
+      (side . bottom)
+      (window-height . 0.5)
+      (slot . -2)
+      (reusable-frames . :just-the-selected-frame))
      ;; Display SQL: MySQL in current window using full frame.
      ;; Just to test, might still want to move it to its own tab later on.
      ("\\*SQL: MySQL\\*"
