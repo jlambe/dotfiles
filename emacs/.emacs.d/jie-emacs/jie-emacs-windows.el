@@ -8,6 +8,8 @@
   :custom
   (display-buffer-alist
    `(
+     ;; Always hide the Async Shell Command standard output buffer by default
+     ("\\*Async Shell Command\\*" (display-buffer-no-window))
      ;; Display the xref buffers in bottom right side of the current frame.
      ;; Height is controlled by the number of "Vertico" items.
      ("\\*xref\\*"
