@@ -7,7 +7,7 @@
  '(c-ts-mode-indent-offset 4)
  '(c-warn-ids-with-dollar t)
  '(compilation-scroll-output t)
- '(package-selected-packages '(eglot eglot-booster)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

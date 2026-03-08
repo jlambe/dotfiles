@@ -1,6 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package emacs
+  :custom
+  (scroll-bar-mode nil)
   :init
   ;; Disable menu bar if on Linux GUI or terminal(need to update code here).
   (menu-bar-mode -1)
@@ -23,10 +25,11 @@
   ;; Disable tool bar
   (tool-bar-mode -1)
 
-  ;; Default font for macos
-  (when (string= system-type "darwin")
-    (add-to-list 'default-frame-alist
-  	       '(font . "0xProto Nerd Font Mono 12")))
+  ;; Default font (must be manully installed)
+  ;; Nerd font - 0xProto Nerd Font
+  ;; (when (string= system-type "darwin")
+  (add-to-list 'default-frame-alist
+  	       '(font . "0xProto Nerd Font Mono 12"))
 
   ;; Tree-sitter configuration
   (setq treesit-language-source-alist
