@@ -596,7 +596,10 @@ Configuration file for anything related to programmation.
   		  ;; Custom TODO font-lock/custom face
   		  ;; Display colored face on TODO comments.
   		  (font-lock-add-keywords nil
-  			'(("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)))
+  			'(
+  			  ("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)
+  			  ("\\<\\(@?NOTE\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-string-face t)
+  			  ))
   		))))
 
   ;; Install web-mode
