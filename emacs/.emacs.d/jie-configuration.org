@@ -593,7 +593,7 @@ Configuration file for anything related to programmation.
   		  (setq-local show-trailing-whitespace t)
   		  ))
      (prog-mode . (lambda()
-  		  ;; Custom TODO font-lock/custom face
+  		  ;; Custom @TODO font-lock/custom face
   		  ;; Display colored face on TODO comments.
   		  (font-lock-add-keywords nil
   			'(
@@ -701,6 +701,10 @@ Configuration file for anything related to programmation.
 
   ;; JSON and JSONC
   (use-package json-mode
+    :ensure t)
+
+  ;; Debug Tools
+  (use-package dape
     :ensure t)
 
   (provide 'jie-emacs-prog)
