@@ -7,7 +7,15 @@
  '(c-ts-mode-indent-offset 4)
  '(c-warn-ids-with-dollar t)
  '(compilation-scroll-output t)
- '(package-selected-packages nil))
+ '(fill-column 80)
+ '(package-selected-packages
+   '(ace-window cape catppuccin-theme cfrs composer consult corfu-terminal dape
+		diff-hl dired-git-info diredfl doom-themes ef-themes
+		eglot-booster exec-path-from-shell flymake-phpstan hide-lines
+		hsluv ht hydra json-mode magit marginalia markdown-mode
+		nerd-icons-completion nerd-icons-corfu nerd-icons-dired
+		nerd-icons-grep nerd-icons-xref nov orderless ov pfuture project
+		quelpa rainbow-mode vertico vterm web-mode yasnippet-capf)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -9,19 +9,22 @@
   ((prog-mode . hl-line-mode)
    (prog-mode . electric-pair-mode)
    (prog-mode . (lambda()
-		  ;; Display file name (absolute) of currently visited
-		  ;; buffer in frame title bar (if supported by window manager)
-		  ;; when working in code source.
-		  (setq-local frame-title-format "%f")
-		  ;;; Show trailing whitespaces
-		  (setq-local show-trailing-whitespace t)
-		  ))
+    		  ;; Display file name (absolute) of currently visited
+    		  ;; buffer in frame title bar (if supported by window manager)
+    		  ;; when working in code source.
+    		  (setq-local frame-title-format "%f")
+    		  ;;; Show trailing whitespaces
+    		  (setq-local show-trailing-whitespace t)
+    		  ))
    (prog-mode . (lambda()
-		  ;; Custom TODO font-lock/custom face
-		  ;; Display colored face on TODO comments.
-		  (font-lock-add-keywords nil
-			'(("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)))
-		))))
+    		  ;; Custom @TODO font-lock/custom face
+    		  ;; Display colored face on TODO comments.
+    		  (font-lock-add-keywords nil
+    					  '(
+    					    ("\\<\\(@?TODO\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-warning-face t)
+    					    ("\\<\\(@?NOTE\s?\\(([a-zA-Z0-9]+)\\)?\\)" 1 font-lock-string-face t)
+    					    ))
+    		  ))))
 
 ;; Install web-mode
 (use-package web-mode
@@ -33,14 +36,21 @@
 (use-package php-mode
   :ensure t
   :hook (
-    	 (php-mode . jie-php-mode)))
+         (php-mode . jie-php-mode)))
 
 ;; Install flymake-phpstan package.
 ;; Provides phpstan reporting to flymake diagnostics.
-(use-package flymake-phpstan
-  :ensure t
-  :config
-  (add-hook 'php-ts-mode 'flymake-phpstan-turn-on))
+(use-package phpstan
+  :ensure t)
+
+;; On "php-ts-mode-hook", register on "after-save-hook" to automatically run the "php-cs-fixer"
+;; tool against the current edited file.
+(defun ju/run-phpcsfixer (filepath)
+  "A function that calls the php-cs-fixer executable against the given
+relative FILEPATH."
+  (let ((program (concat (project-root (project-current)) "vendor/bin/php-cs-fixer")))
+    (apply #'call-process program nil "*PHP-CS-Fixer*" nil `("fix" ,filepath))
+    ))
 
 ;; Configure PHP Tree Sitter mode
 ;; Keymap reference - Chapter 51 - Section 3: Customizing Key Bindings
@@ -48,16 +58,25 @@
 ;; and that it is better to leverage "keymap-set" functions.
 (use-package php-ts-mode
   :hook (
-	 (php-ts-mode . (lambda ()
-			  (setq tab-width 4
-				indent-tabs-mode nil
-				html-ts-mode-indent-offset 4
-				php-ts-mode-js-css-indent-offset 4
-				)))
-	 (flymake-mode . (lambda()
-			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
-			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
-	 ))
+    	 (php-ts-mode . (lambda ()
+    			  (setq tab-width 4
+    				indent-tabs-mode nil
+    				html-ts-mode-indent-offset 4
+    				php-ts-mode-js-css-indent-offset 4
+    				)))
+    	 (flymake-mode . (lambda ()
+    			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
+    			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
+	   ;; Automatically execute php-cs-fixer against current PHP file/buffer.
+    	 (php-ts-mode . (lambda ()
+    			  (add-hook 'after-save-hook (lambda()
+    						       (let* ((path (file-truename (buffer-file-name)))
+    							      (dir (project-root (project-current)))
+    							      (relative-path (file-relative-name path dir))
+    							      )
+    							 (ju/run-phpcsfixer relative-path)
+    							 )))))
+    	 ))
 
 ;; Install composer.el package
 (use-package composer
@@ -72,14 +91,28 @@
         indent-line-function 'insert-tab
         )
   :hook (
-	 (c-mode . (lambda ()
-		     (setq tab-width 4)))
-	     ))
+    	 (c-mode . (lambda ()
+    		     (setq tab-width 4)))
+    	 ))
 
 ;; Configure indentation for Typescript
 (use-package typescript-ts-mode
   :config
   (setq typescript-ts-mode-indent-offset 4))
+
+;; Flymake configuration with automatic support
+;; of ESlint on tsx-ts-mode.
+;; See the jl-flymake.el file stored within the jl-emacs directory.
+(use-package jl-flymake
+  :hook
+  (tsx-ts-mode . jl-flymake-setup-eslint-backend))
+
+;; The function is activating flymake when called as well as appending
+;; the native "eglot" flymake backend function.
+;; This hack allows to load multiple backend functions on Flymake.
+(defun manually-activate-flymake ()
+  (add-hook 'flymake-diagnostic-functions #'eglot-flymake-backend nil t)
+  (flymake-mode 1))
 
 ;; Eglot -  LSP
 ;; Intelephense for PHP
@@ -88,9 +121,14 @@
   (add-to-list 'eglot-server-programs
                '(php-mode . ("intelephense" "--stdio")))
   (add-to-list 'eglot-server-programs
-	       '((typescript-mode) "typescript-language-server" "--stdio"))
+    	       '((typescript-mode) "typescript-language-server" "--stdio"))
   (add-to-list 'eglot-server-programs
-	       '(c-mode . ("clangd")))
+    	       '(c-mode . ("clangd")))
+  ;; Part of the eglot Flymake hack.
+  ;; This statement is disabling auto-activation of Flymake
+  ;; by Eglot, so we can first load our own Flymake backends (eslint, ...)
+  ;; and then append back the original "eglot-flymake-backend" function.
+  (add-to-list 'eglot-stay-out-of 'flymake)
   :bind
   (("C-, D" . eglot-find-declaration)
    ("C-, i" . eglot-find-implementation)
@@ -99,7 +137,9 @@
    ("<f6>" . eglot-rename))
   :hook
   ((php-ts-mode . eglot-ensure)
- (tsx-ts-mode . eglot-ensure)))
+   (tsx-ts-mode . eglot-ensure)
+   ;; Part of the eglot Flymake hack.
+   (eglot-managed-mode . manually-activate-flymake)))
 
 ;; /!\ Missing "emacs-lsp-booster" RUST program in $PATH.
 ;; - https://github.com/blahgeek/emacs-lsp-booster
@@ -122,6 +162,10 @@
 
 ;; JSON and JSONC
 (use-package json-mode
+  :ensure t)
+
+;; Debug Tools
+(use-package dape
   :ensure t)
 
 (provide 'jie-emacs-prog)

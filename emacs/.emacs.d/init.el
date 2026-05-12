@@ -53,6 +53,7 @@
 (require 'jie-emacs-writing)
 (require 'jie-emacs-prog)
 (require 'jl-emacs-editorconfig)
+(require 'jl-emacs-elisp)
 (require 'jie-emacs-theme)
 (require 'jl-emacs-yasnippet)
 (require 'jie-emacs-skeletons)
@@ -60,6 +61,7 @@
 (require 'jie-emacs-vterm)
 (require 'jie-emacs-bindings)
 (require 'jl-emacs-reading)
+(require 'jl-flymake)
 
 ;; Custom utilities.
 (when (string= system-type "darwin")
