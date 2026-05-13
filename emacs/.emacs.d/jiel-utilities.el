@@ -23,13 +23,6 @@
   "Predicate function that return t if system is darwin/macos."
   (eq system-type jiel-system-macos))
 
-(defun jiel-macos-default-modifiers ()
-  "Setup macos default keyboard modifiers.
-Set the right option modifier key as the meta key."
-  (when (jiel-macos-p)
-    (setq mac-right-option-modifier 'meta
-	  mac-option-modifier 'none)))
-
 (defun jiel-emacs-directory-load-path (paths &optional append)
   "Utility function to add or append load paths.
 Add each path from PATHS to the `load-path' global variable.
@@ -71,17 +64,11 @@ If APPEND is t, each package archive is appended to the `package-archives' varia
     (dolist (package packages)
       (add-to-list 'package-archives package append))))
 
-(defun jiel-emacs-disable-backup ()
-  "Disable Emacs backup file support.
-The function sets the following variables:
-
-- `make-backup-files': set to nil so it does not create a backup file on first
-  save.
-- `backup-inhibited': set to t to disable backup.
-- `vc-make-backup-files': set to nil to disable backup if under version control."
-  (setq make-backup-files nil
-	backup-inhibited t
-	vc-make-backup-files nil))
+(defun jiel-emacs-setup-custom-el ()
+  "Setup the file `custom.el' in .emacs.d directory.
+when the file is available, Emacs stores customization code into that file, in
+order to avoid to pollute the main file `init.el'."
+  (jiel-emacs-load-elisp-file "custom.el"))
 
 (defun jiel-window-system-p (window-systems)
   "Return t if variable `window-system' symbol is in WINDOW-SYSTEMS list."

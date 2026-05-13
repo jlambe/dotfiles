@@ -8,6 +8,7 @@
 
 ;;; Code:
 
+;; Dependencies
 (require 'jiel-utilities)
 
 ;; Load the "exec-path-from-shell" package.
@@ -26,6 +27,19 @@
 ;; The emacs directory contains the configuration files to customize Emacs.
 (jiel-emacs-directory-load-path '("jiel-lisp" "jiel-emacs"))
 
+;; Add the Melpa packages archive.
+(jiel-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
+
+;; Setup Emacs custom.el file.
+(jiel-emacs-setup-custom-el)
+
+;; Load my Emacs modules.
+(require 'jiel-emacs-editor)
+
 ;; Personal project files.
 ;; Load any extra elisp files created for specific project.
-;; TODO?
+;; TODO (julien): should I load paths to external directories?
+
+(provide 'jiel-init)
+
+;;; jiel-init.el ends here
