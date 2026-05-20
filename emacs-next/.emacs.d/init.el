@@ -1,4 +1,4 @@
-;;; jiel-init.el --- Emacs initialization  -*- lexical-binding: t; -*-
+;;; init.el --- Emacs initialization  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024-2026 by Julien Lambé
 
@@ -9,7 +9,7 @@
 ;;; Code:
 
 ;; Dependencies
-(require 'jiel-utilities)
+(require 'jl-utilities)
 
 ;; Load the "exec-path-from-shell" package.
 ;; This package makes Emacs use the $PATH setup by my shell. So any environment
@@ -18,28 +18,23 @@
 ;; Load the package only if under macos or X window systems (linux).
 (use-package exec-path-from-shell
   :ensure t
-  :if (jiel-window-system-p (list jiel-window-system-macos jiel-window-system-x))
+  :if (jl-window-system-p (list jl-window-system-macos jl-window-system-x))
   :init (exec-path-from-shell-initialize))
 
-;; Add "jiel-lisp" and "jiel-emacs" directories to load path.
+;; Add "jl-lisp" and "jl-emacs" directories to load path.
 ;; The lisp directory contains additional lisp functions to help me manage my
 ;; GNU Emacs configuration or elisp development.
 ;; The emacs directory contains the configuration files to customize Emacs.
-(jiel-emacs-directory-load-path '("jiel-lisp" "jiel-emacs"))
+(jl-emacs-directory-load-path '("jl-lisp" "jl-emacs"))
 
 ;; Add the Melpa packages archive.
-(jiel-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
-
-;; Setup Emacs custom.el file.
-(jiel-emacs-setup-custom-el)
+(jl-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
 
 ;; Load my Emacs modules.
-(require 'jiel-emacs-editor)
+(require 'jl-emacs-editor)
 
 ;; Personal project files.
 ;; Load any extra elisp files created for specific project.
 ;; TODO (julien): should I load paths to external directories?
 
-(provide 'jiel-init)
-
-;;; jiel-init.el ends here
+;;; init.el ends here

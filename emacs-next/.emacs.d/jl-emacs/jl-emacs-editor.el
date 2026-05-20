@@ -1,4 +1,4 @@
-;;; jiel-emacs-editor.el --- Editor related configuration  -*- lexical-binding: t; -*-
+;;; jl-emacs-editor.el --- Editor related configuration  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024-2026 by Julien Lambé
 
@@ -8,15 +8,15 @@
 
 ;;; Code:
 
-(require 'jiel-utilities)
+(require 'jl-utilities)
 
-(defvar jiel-fill-column 80
+(defvar jl-fill-column 80
   "Default variable `fill-column' value.")
 
-(defvar jiel-scroll-margin 8
+(defvar jl-scroll-margin 8
   "Default variable `scroll-margin' value.")
 
-(defvar jiel-screen-context-lines 8
+(defvar jl-screen-context-lines 8
   "Default variable `next-screen-context-lines' value.")
 
 ;; Emacs editor global generic configuration.
@@ -34,21 +34,27 @@
   ;;; Change meta key modifier support on macos.
   ;;; Set meta key on the right option keyboard key and disable the default left
   ;;; option key as the meta key (macos only).
-  (when (jiel-macos-p)
+  (when (jl-macos-p)
     (setq mac-right-option-modifier 'meta
 	  mac-option-modifier 'none))
+
+  ;; Customization
+  ;;; Setup the file `custom.el' in .emacs.d directory.
+  ;;; when the file is available, Emacs stores customization code into that file, in
+  ;;; order to avoid to pollute the main file `init.el'.
+  (jl-emacs-load-elisp-file "custom.el")
 
   ;; Scroll bar
   ;;; Disable scroll bar display in buffers.
   (scroll-bar-mode -1)
   ;;; Set scroll-margin to 8 lines to automatically scroll before reaching the top or bottom of a window.
-  (setq scroll-margin jiel-scroll-margin)
+  (setq scroll-margin jl-scroll-margin)
   ;;; Allow to scroll up to the beginning or down to the end of the buffer.
   (setq scroll-error-top-bottom t)
   ;;; Preserve screen position while scrolling.
   (setq scroll-preserve-screen-position t)
   ;;; Number of lines of continuity when scrolling by screenfuls.
-  (setq next-screen-context-lines jiel-screen-context-lines)
+  (setq next-screen-context-lines jl-screen-context-lines)
 
   ;; Menu bar
   ;;; Disable the menu bar.
@@ -68,9 +74,9 @@
 
   ;; Fill mode
   ;;; Set default variable `fill-column' length.
-  (setq fill-column jiel-fill-column)
+  (setq fill-column jl-fill-column)
   );; (use-package emacs) ends here
 
-(provide 'jiel-emacs-editor)
+(provide 'jl-emacs-editor)
 
-;;; jiel-emacs-editor.el ends here
+;;; jl-emacs-editor.el ends here
