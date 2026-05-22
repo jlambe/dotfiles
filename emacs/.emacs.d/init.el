@@ -23,7 +23,7 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (load custom-file)
 
-(setq initial-buffer-choice t)
+;; (setq initial-buffer-choice t)
 
 ;;; When working on macos, keep the right option key as the meta modifier
 ;;; and disable the left option key to work as a default alt key so I can

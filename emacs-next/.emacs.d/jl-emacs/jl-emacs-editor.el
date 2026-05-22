@@ -75,6 +75,13 @@
   ;; Fill mode
   ;;; Set default variable `fill-column' length.
   (setq fill-column jl-fill-column)
+
+  ;; Enable context menu. `vertico-multiform-mode' adds a menu in the minibuffer
+  ;; to switch display modes.
+  (context-menu-mode 1)
+
+  ;; Support opening new minibuffers from inside existing minibuffers.
+  (setq enable-recursive-minibuffers t)
   );; (use-package emacs) ends here
 
 (provide 'jl-emacs-editor)

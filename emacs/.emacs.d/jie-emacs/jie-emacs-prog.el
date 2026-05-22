@@ -68,15 +68,15 @@ relative FILEPATH."
     			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
     			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
 	   ;; Automatically execute php-cs-fixer against current PHP file/buffer.
-    	 (php-ts-mode . (lambda ()
-    			  (add-hook 'after-save-hook (lambda()
-    						       (let* ((path (file-truename (buffer-file-name)))
-    							      (dir (project-root (project-current)))
-    							      (relative-path (file-relative-name path dir))
-    							      )
-    							 (ju/run-phpcsfixer relative-path)
-    							 )))))
-    	 ))
+;;     	 (php-ts-mode . (lambda ()
+;;     			  (add-hook 'after-save-hook (lambda()
+;;     						       (let* ((path (file-truename (buffer-file-name)))
+;;     							      (dir (project-root (project-current)))
+;;     							      (relative-path (file-relative-name path dir))
+;;     							      )
+;;     							 (ju/run-phpcsfixer relative-path)
+;;     							 )))))
+     	 ))
 
 ;; Install composer.el package
 (use-package composer

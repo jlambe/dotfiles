@@ -10,7 +10,7 @@
  '(fill-column 80)
  '(package-selected-packages
    '(ace-window cape catppuccin-theme cfrs composer consult corfu-terminal dape
-		diff-hl dired-git-info diredfl doom-themes ef-themes
+		diff-hl dired-git-info diredfl doom-themes ef-themes eglot
 		eglot-booster exec-path-from-shell flymake-phpstan hide-lines
 		hsluv ht hydra json-mode magit marginalia markdown-mode
 		nerd-icons-completion nerd-icons-corfu nerd-icons-dired
@@ -22,7 +22,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(font-lock-variable-name-face ((t (:foreground "#4078f2"))))
- '(hl-line ((t (:extend t :background "#d6e8ff"))))
- '(tab-bar-tab ((t (:background "#d8e8d7" :foreground "#50a14f"))))
+ '(hl-line ((t (:extend t))))
+ '(tab-bar-tab ((t nil)))
  '(tab-bar-tab-group-current ((t (:inherit tab-bar-tab :box nil :weight bold))))
  '(tab-line-tab-current ((t (:background "#fafafa" :foreground "#383a42")))))

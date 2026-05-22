@@ -94,7 +94,7 @@ instead of using the default init.el file:
 When opening Emacs, display the =*scratch*= buffer by default.
 
 #+begin_src emacs-lisp :tangle "init.el"
-  (setq initial-buffer-choice t)
+  ;; (setq initial-buffer-choice t)
 #+end_src
 
 ** Modifiers keys bindings
@@ -220,8 +220,9 @@ allocate them a full configuration file...
     ;; Default font (must be manully installed)
     ;; Nerd font - 0xProto Nerd Font
     ;; (when (string= system-type "darwin")
-    (add-to-list 'default-frame-alist
-    	       '(font . "0xProto Nerd Font Mono 12"))
+    ;; (add-to-list 'default-frame-alist
+    ;; 	       '(font . "0xProto Nerd Font Mono 12"))
+    (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-15"))
 
     ;; Tree-sitter configuration
     (setq treesit-language-source-alist
@@ -304,15 +305,18 @@ allocate them a full configuration file...
      ;; Use ibuffer as default buffer browser
      ;; [..] is a "vector"
      ([remap list-buffers] . ibuffer)
-     )
-    :hook
-    (
-     ;; Use relative line numbers while working on code files.
-     (prog-mode . (lambda ()
-  		  (setq display-line-numbers 'relative)))))
+     ))
 
   (provide 'jie-emacs-editor)
 #+end_src
+
+Enable relatice line numbers in prog-mode:
+
+:hook
+(
+;; Use relative line numbers while working on code files.
+(prog-mode . (lambda ()
+(setq display-line-numbers 'relative)))))
 
 ** Theme
 Experimenting with `ef' themes beside core `modus' themes.
@@ -320,20 +324,19 @@ Experimenting with `ef' themes beside core `modus' themes.
 #+begin_src emacs-lisp :tangle "jie-emacs/jie-emacs-theme.el" :mkdirp yes
   ;;; -*- lexical-binding: t -*-
 
-  (use-package doom-themes
-     :ensure t
-     :config
-     (setq doom-themes-enable-bold t
-           doom-themes-enable-italic t)
-     (load-theme 'doom-one-light t)
-     (custom-set-faces
-      ;; Customize variables face color.
-      `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'blue)))))))
+  (use-package ef-themes
+    :ensure t
+    :init
+    ;; Indicates modus theme functions to care only about ef-themes.
+    (ef-themes-take-over-modus-themes-mode 1)
+    :config
+    ;; Load the default theme.
+    (modus-themes-load-theme 'ef-light))
 
   (use-package nerd-icons
     :ensure t
     :custom
-    (nerd-icons-font-family "0xProto Nerd Font Mono"))
+    (nerd-icons-font-family "DejaVuSansM Nerd Font Mono"))
 
   (use-package nerd-icons-dired
     :ensure t
@@ -646,15 +649,15 @@ Configuration file for anything related to programmation.
       			   (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
       			   (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)))
   	   ;; Automatically execute php-cs-fixer against current PHP file/buffer.
-      	 (php-ts-mode . (lambda ()
-      			  (add-hook 'after-save-hook (lambda()
-      						       (let* ((path (file-truename (buffer-file-name)))
-      							      (dir (project-root (project-current)))
-      							      (relative-path (file-relative-name path dir))
-      							      )
-      							 (ju/run-phpcsfixer relative-path)
-      							 )))))
-      	 ))
+  ;;     	 (php-ts-mode . (lambda ()
+  ;;     			  (add-hook 'after-save-hook (lambda()
+  ;;     						       (let* ((path (file-truename (buffer-file-name)))
+  ;;     							      (dir (project-root (project-current)))
+  ;;     							      (relative-path (file-relative-name path dir))
+  ;;     							      )
+  ;;     							 (ju/run-phpcsfixer relative-path)
+  ;;     							 )))))
+       	 ))
 
   ;; Install composer.el package
   (use-package composer

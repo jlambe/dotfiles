@@ -1,19 +1,18 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package doom-themes
-   :ensure t
-   :config
-   (setq doom-themes-enable-bold t
-         doom-themes-enable-italic t)
-   (load-theme 'doom-one-light t)
-   (custom-set-faces
-    ;; Customize variables face color.
-    `(font-lock-variable-name-face ((t (:foreground ,(doom-color 'blue)))))))
+(use-package ef-themes
+  :ensure t
+  :init
+  ;; Indicates modus theme functions to care only about ef-themes.
+  (ef-themes-take-over-modus-themes-mode 1)
+  :config
+  ;; Load the default theme.
+  (modus-themes-load-theme 'ef-light))
 
 (use-package nerd-icons
   :ensure t
   :custom
-  (nerd-icons-font-family "0xProto Nerd Font Mono"))
+  (nerd-icons-font-family "DejaVuSansM Nerd Font Mono"))
 
 (use-package nerd-icons-dired
   :ensure t

@@ -28,8 +28,9 @@
   ;; Default font (must be manully installed)
   ;; Nerd font - 0xProto Nerd Font
   ;; (when (string= system-type "darwin")
-  (add-to-list 'default-frame-alist
-  	       '(font . "0xProto Nerd Font Mono 12"))
+  ;; (add-to-list 'default-frame-alist
+  ;; 	       '(font . "0xProto Nerd Font Mono 12"))
+  (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-15"))
 
   ;; Tree-sitter configuration
   (setq treesit-language-source-alist
@@ -112,11 +113,6 @@
    ;; Use ibuffer as default buffer browser
    ;; [..] is a "vector"
    ([remap list-buffers] . ibuffer)
-   )
-  :hook
-  (
-   ;; Use relative line numbers while working on code files.
-   (prog-mode . (lambda ()
-		  (setq display-line-numbers 'relative)))))
+   ))
 
 (provide 'jie-emacs-editor)
