@@ -49,7 +49,6 @@ Currently only supporting ef-themes.")
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
-;; TODO: verify this isn't breaking if missing dependency...
 (use-package nerd-icons-completion
   :ensure t
   :if (display-graphic-p)

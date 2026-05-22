@@ -30,8 +30,13 @@
 ;; Add the Melpa packages archive.
 (jl-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
 
+;; Load my Elisp modules.
+
 ;; Load my Emacs modules.
 (require 'jl-emacs-editor)
+(require 'jl-emacs-theme)
+(require 'jl-emacs-windows)
+(require 'jl-emacs-keybindings)
 
 ;; Personal project files.
 ;; Load any extra elisp files created for specific project.
