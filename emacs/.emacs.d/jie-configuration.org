@@ -276,9 +276,6 @@ allocate them a full configuration file...
     (
      ;; C-z to undo
      ("C-z" . undo)
-     
-     ;; C-A move the point at the beginning of line text
-     ("C-S-a" . beginning-of-line-text)
 
      ;; C-E keybinding to scroll up by line
      ;; C-Y keybinding to scroll down by line

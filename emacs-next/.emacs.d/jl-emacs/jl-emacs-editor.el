@@ -82,7 +82,26 @@
 
   ;; Support opening new minibuffers from inside existing minibuffers.
   (setq enable-recursive-minibuffers t)
+
+  ;; Advice the `compile' command to work in interactive mode by default.
+  (advice-add #'compile :around #'jl-advice-compile-interactive)
   );; (use-package emacs) ends here
+
+;; Dired
+(use-package dired
+  :hook
+  ;; By default, hide all files and directories details.
+  ((dired-mode . dired-hide-details-mode)))
+
+;; This package provides additional font locks in Dired mode (prettier UI basically).
+;; https://github.com/purcell/diredfl
+(use-package diredfl
+  :ensure t
+  :config
+  (diredfl-global-mode))
+
+(use-package dired-git-info
+  :ensure t)
 
 (provide 'jl-emacs-editor)
 

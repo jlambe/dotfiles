@@ -85,6 +85,14 @@ If universal ARG is set, the absolute path of the buffer file is used."
         (kill-new path)
       (kill-new relative-path))))
 
+;; Always make the "compile" command to run "interactively" instead of just displaying program output.
+;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
+(defun jl-advice-compile-interactive (function &rest args)
+  "Advice FUNCTION for the `compile' command using ARGS.
+Sets its COMINT argument to t in order to run interactively."
+  (let ((command (car args)))
+    (apply function (list command t))))
+
 (provide 'jl-lisp-utilities)
 
 ;;; jl-lisp-utilities.el ends here
