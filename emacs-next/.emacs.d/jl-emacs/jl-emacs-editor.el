@@ -95,6 +95,9 @@
 
   ;; Advice the `compile' command to work in interactive mode by default.
   (advice-add #'compile :around #'jl-advice-compile-interactive)
+  :custom
+  ;; Enable indentation+completion using TAB key
+  (tab-always-indent 'complete)
   );; (use-package emacs) ends here
 
 ;; Dired
@@ -111,6 +114,24 @@
   (diredfl-global-mode))
 
 (use-package dired-git-info
+  :ensure t)
+
+;; Version Control Management
+;; Install Magit.
+(use-package magit
+  :ensure t)
+
+;; Add version control gutter highlights.
+(use-package diff-hl
+  :if (display-graphic-p)
+  :ensure t
+  :config
+  (global-diff-hl-mode)
+  :hook
+  (magit-post-refresh . diff-hl-magit-post-refresh))
+
+;; Vterm
+(use-package vterm
   :ensure t)
 
 (provide 'jl-emacs-editor)

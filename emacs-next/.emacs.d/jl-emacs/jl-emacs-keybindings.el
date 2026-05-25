@@ -47,6 +47,39 @@
 ;;; Toggle git info mode in Dired
 (keymap-set dired-mode-map ")" 'dired-git-info-mode)
 
+;;; Flymake
+(keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
+(keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)
+
+;;; Eglot
+(keymap-global-set "C-, D" 'eglot-find-declaration)
+(keymap-global-set "C-, i" 'eglot-find-implementation)
+(keymap-global-set "C-, x" 'eglot-code-actions)
+(keymap-global-set "<f6>" 'eglot-rename)
+(keymap-global-set "<f7>" 'eglot-format-buffer)
+
+;;; Xref
+(keymap-global-set "C-, ," 'xref-go-back)
+(keymap-global-set "C-, d" 'xref-find-definitions)
+(keymap-global-set "C-, 4 d" 'xref-find-definitions-other-window)
+(keymap-global-set "C-, r" 'xref-find-references)
+(keymap-global-set "C-, R" 'xref-find-references-and-replace)
+
+;;; Consult
+(keymap-global-set "C-x b" 'consult-buffer)
+(keymap-global-set "C-x 4 b" 'consult-buffer-other-window)
+(keymap-global-set "C-x 5 b" 'consult-buffer-other-frame)
+(keymap-global-set "C-x t b" 'consult-buffer-other-tab)
+(keymap-global-set "C-x r b" 'consult-bookmark)
+(keymap-global-set "C-x p b" 'consult-project-buffer)
+(keymap-global-set "M-y" 'consult-yank-pop)
+(keymap-global-set "M-g f" 'consult-flymake)
+(keymap-global-set "M-g g" 'consult-goto-line)
+(keymap-global-set "M-g M-g" 'consult-goto-line)
+(keymap-global-set "M-g i" 'consult-imenu)
+(keymap-global-set "M-s r" 'consult-ripgrep)
+(keymap-global-set "M-s g" 'consult-line)
+
 (provide 'jl-emacs-keybindings)
 
 ;;; jl-emacs-keybindings.el ends here

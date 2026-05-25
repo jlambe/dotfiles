@@ -58,15 +58,49 @@
     (add-to-list 'major-mode-remap-alist mapping))
   ) ;; (use-package emacs) ends here
 
+;; Eglot
+(use-package eglot
+  :config
+  (dolist (lang '(
+		  (php-mode . ("intelephense" "--stdio"))
+		  (typescript-mode . ("typescript-language-server" "--stdio"))
+		  (c-mode . ("clangd"))))
+    (add-to-list 'eglot-server-programs lang))
+  :hook
+  (php-ts-mode . eglot-ensure)
+  (tsx-ts-mode . eglot-ensure))
+
+;; Debug Tools - Debug Adapter Protocol
+(use-package dape
+  :ensure t)
+
+;; Editorconfig
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
 ;; Prog-mode
 (use-package emacs
+  :config
+  ;; Default indentation configuration.
+  (setq-default electric-indent-inhibit t)
+  (setq tab-width 4
+        indent-tabs-mode nil
+        indent-line-function 'insert-tab)
   :custom
   ;; Only highlight on current/active buffer.
   (hl-line-sticky-flag nil)
   :hook
   (
+   ;; Turn on the highlight mode while programming.
    (prog-mode . hl-line-mode)
+   ;; Turn on the electric pair mode while programming.
    (prog-mode . electric-pair-mode)
+   ;; C mode default indentation.
+   (c-mode . (lambda ()
+	       (setq tab-width 4)))
+   ;; While programming...
    (prog-mode . (lambda ()
 		  ;; Display absolute file name of current buffer in the frame title bar.
 		  (setq-local frame-title-format "%f")
@@ -82,6 +116,42 @@
 					    ))
 		  )))
   ) ;; (use-package emacs) ends here
+
+;; Elisp
+(use-package emacs
+  :hook
+  ;; Turn on Flymake while programming in elisp.
+  ((emacs-lisp-mode . flymake-mode)))
+
+;; PHP
+(use-package php-mode
+  :ensure t)
+
+(use-package php-ts-mode
+  :ensure t
+  :hook
+  (
+   (php-ts-mode . subword-mode)
+   ;; Configure indentation in PHP Mode.
+   (php-ts-mode . (lambda ()
+		    (setq tab-width 4
+      			  indent-tabs-mode nil
+      			  html-ts-mode-indent-offset 4
+      			  php-ts-mode-js-css-indent-offset 4
+      			  )))))
+
+(use-package phpstan
+  :ensure t)
+
+;; Typescript
+;; Configure indentation for Typescript
+(use-package typescript-ts-mode
+  :config
+  (setq typescript-ts-mode-indent-offset 4))
+
+;; JSON and JSONC
+(use-package json-mode
+  :ensure t)
 
 (provide 'jl-emacs-programming)
 

@@ -37,7 +37,7 @@ If APPEND is t, each package archive is appended to the `package-archives' varia
 ;; The lisp directory contains additional lisp functions to help me manage my
 ;; GNU Emacs configuration or elisp development.
 ;; The emacs directory contains the configuration files to customize Emacs.
-(jl-emacs-directory-load-path '("jl-lisp" "jl-emacs"))
+(jl-emacs-directory-load-path '("jl-lisp" "jl-emacs" "/Volumes/Materia/dev/emacs-packages/sailamx"))
 
 ;; Add the Melpa packages archive.
 (jl-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
@@ -52,11 +52,8 @@ If APPEND is t, each package archive is appended to the `package-archives' varia
 (require 'jl-emacs-windows)
 (require 'jl-emacs-writing)
 (require 'jl-emacs-programming)
+(require 'jl-emacs-completion)
 
 (require 'jl-emacs-keybindings)
-
-;; Personal project files.
-;; Load any extra elisp files created for specific project.
-;; TODO (julien): should I load paths to external directories?
 
 ;;; init.el ends here
