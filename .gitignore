@@ -11,3 +11,5 @@
 
 /tmux/.local/share/
 /tmux/.local/state/
+/tmux/.local/bin/claude
+/emacs/.emacs.d/debug-adapters/
