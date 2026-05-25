@@ -23,19 +23,6 @@
   "Predicate function that return t if system is darwin/macos."
   (eq system-type jl-system-macos))
 
-(defun jl-emacs-directory-load-path (paths &optional append)
-  "Utility function to add or append load paths.
-Add each path from PATHS to the `load-path' global variable.
-A path can be relative or absolute.  If relative, the path is concatenated
-with user .emacs.d directory path.
-
-If APPEND is t, each path is appended to the `load-path' global variable."
-  (when (listp paths)
-    (dolist (path paths)
-      (if (file-name-absolute-p path)
-	  (add-to-list 'load-path (directory-file-name path) append)
-	(add-to-list 'load-path (locate-user-emacs-file path) append)))))
-
 (defun jl-emacs-directory-load-path-when (condition paths &optional append)
   "Utility function to conditionally add load paths.
 Add each path from PATHS to the `load-path' global variable if the
@@ -57,16 +44,6 @@ The FILENAME is a relative file path from user .emacs.d directory."
 	(message "Cannot load filename %s, file does not exist at path %s" filename filepath)
       (load filepath))))
 
-(defun jl-emacs-add-packages (packages &optional append)
-  "Register PACKAGES to the `package-archives'.
-PACKAGES is a list of alist elements where the key is the package
-archive name string and the value is the url string.
-
-If APPEND is t, each package archive is appended to the `package-archives' variable."
-  (when (listp packages)
-    (dolist (package packages)
-      (add-to-list 'package-archives package append))))
-
 (defun jl-window-system-p (window-systems)
   "Return t if variable `window-system' symbol is in WINDOW-SYSTEMS list."
   (when (listp window-systems)
@@ -84,14 +61,6 @@ If universal ARG is set, the absolute path of the buffer file is used."
     (if (> arg 1)
         (kill-new path)
       (kill-new relative-path))))
-
-;; Always make the "compile" command to run "interactively" instead of just displaying program output.
-;; Idea coming from MasteringEmacs: https://www.masteringemacs.org/article/compiling-running-scripts-emacs
-(defun jl-advice-compile-interactive (function &rest args)
-  "Advice FUNCTION for the `compile' command using ARGS.
-Sets its COMINT argument to t in order to run interactively."
-  (let ((command (car args)))
-    (apply function (list command t))))
 
 (provide 'jl-lisp-utilities)
 

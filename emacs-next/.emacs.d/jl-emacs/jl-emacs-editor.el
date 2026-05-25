@@ -19,6 +19,16 @@
 (defvar jl-screen-context-lines 8
   "Default variable `next-screen-context-lines' value.")
 
+;; Load the "exec-path-from-shell" package.
+;; This package makes Emacs use the $PATH setup by my shell. So any environment
+;; variables set within shell scripts (.bashrc, .zshrc,...) are available within
+;; Emacs.
+;; Load the package only if under macos or X window systems (linux).
+(use-package exec-path-from-shell
+  :ensure t
+  :if (jl-window-system-p (list jl-window-system-macos jl-window-system-x))
+  :init (exec-path-from-shell-initialize))
+
 ;; Emacs editor global generic configuration.
 (use-package emacs
   :init

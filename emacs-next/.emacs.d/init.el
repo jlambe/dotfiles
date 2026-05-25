@@ -8,18 +8,30 @@
 
 ;;; Code:
 
-;; Dependencies
-(require 'jl-utilities)
+(defun jl-emacs-directory-load-path (paths &optional append)
+  "Utility function to add or append load paths.
+Add each path from PATHS to the `load-path' global variable.
+A path can be relative or absolute.  If relative, the path is concatenated
+with user .emacs.d directory path.
 
-;; Load the "exec-path-from-shell" package.
-;; This package makes Emacs use the $PATH setup by my shell. So any environment
-;; variables set within shell scripts (.bashrc, .zshrc,...) are available within
-;; Emacs.
-;; Load the package only if under macos or X window systems (linux).
-(use-package exec-path-from-shell
-  :ensure t
-  :if (jl-window-system-p (list jl-window-system-macos jl-window-system-x))
-  :init (exec-path-from-shell-initialize))
+If APPEND is t, each path is appended to the `load-path' global variable."
+  (when (listp paths)
+    (dolist (path paths)
+      (if (file-name-absolute-p path)
+	  (add-to-list 'load-path (directory-file-name path) append)
+	(add-to-list 'load-path (locate-user-emacs-file path) append)))))
+
+(defun jl-emacs-add-packages (packages &optional append)
+  "Register PACKAGES to the `package-archives'.
+PACKAGES is a list of alist elements where the key is the package
+archive name string and the value is the url string.
+
+If APPEND is t, each package archive is appended to the `package-archives' variable."
+  (when (listp packages)
+    (dolist (package packages)
+      (add-to-list 'package-archives package append))))
+
+;;; Configuration starts here
 
 ;; Add "jl-lisp" and "jl-emacs" directories to load path.
 ;; The lisp directory contains additional lisp functions to help me manage my
@@ -31,11 +43,16 @@
 (jl-emacs-add-packages '(("melpa" . "https://melpa.org/packages/")))
 
 ;; Load my Elisp modules.
+(require 'jl-lisp-utilities)
+(require 'jl-lisp-advice)
 
 ;; Load my Emacs modules.
 (require 'jl-emacs-editor)
 (require 'jl-emacs-theme)
 (require 'jl-emacs-windows)
+(require 'jl-emacs-writing)
+(require 'jl-emacs-programming)
+
 (require 'jl-emacs-keybindings)
 
 ;; Personal project files.
