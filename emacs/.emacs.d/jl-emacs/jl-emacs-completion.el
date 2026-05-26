@@ -95,6 +95,22 @@
   :if (< (string-to-number emacs-version) 31)
   :after '(corfu popon))
 
+;; Embark - Minibuffer actions
+(use-package embark
+  :ensure t
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embard-prefix-help-command)
+  ;; Add Embark to the mouse context menu.
+  (add-hook 'context-menu-functions #'embark-context-menu 100)
+  :config
+  (add-to-list 'display-buffer-alist
+	       '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none))))
+  )
+
+(use-package embark-consult
+  :ensure t)
+
 ;; Snippets
 (use-package yasnippet
   :ensure t

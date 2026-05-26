@@ -80,6 +80,10 @@
 (keymap-global-set "M-s r" 'consult-ripgrep)
 (keymap-global-set "M-s g" 'consult-line)
 
+;;; Embark
+(keymap-global-set "C-, a" 'embark-act)
+(keymap-global-set "C-, e" 'embark-dwim)
+
 (provide 'jl-emacs-keybindings)
 
 ;;; jl-emacs-keybindings.el ends here
