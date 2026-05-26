@@ -62,6 +62,11 @@ If universal ARG is set, the absolute path of the buffer file is used."
         (kill-new path)
       (kill-new relative-path))))
 
+(defun jl-copy-buffer-name ()
+  "Copy to clipboard (kill ring) current buffer name."
+  (interactive)
+  (kill-new (buffer-name)))
+
 (provide 'jl-lisp-utilities)
 
 ;;; jl-lisp-utilities.el ends here
