@@ -36,21 +36,21 @@
      ;; Display the eldoc buffer in bottom right side of the current frame.
      ("\\*[Ee]ldoc\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.33)
+      (window-height . fit-window-to-buffer)
       (side . bottom)
       (slot . 1))
 
      ;; Display the info buffer on the right side of the current frame.
      ("\\*\\([Hh]elp\\|[Ii]nfo\\)\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.33)
+      (window-width . fit-window-to-buffer)
       (side . right)
       (slot . 0))
 
      ;; Display "Apropos" buffer on the right side, bottom of the current frame.
      ("\\*Apropos\\*"
       (display-buffer-in-side-window)
-      (window-width . 0.33)
+      (window-width . fit-window-to-buffer)
       (side . right)
       (slot . 1))
 

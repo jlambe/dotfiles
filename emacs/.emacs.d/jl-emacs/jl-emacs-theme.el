@@ -22,7 +22,7 @@ Currently only supporting ef-themes.")
   ;;; This is setting the default font for all new graphical frames.
   ;;; Follows the Fontconfig pattern.
   ;;; See Emacs > Fonts documentation for details.
-  (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-14"))
+  (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-13"))
   )
 
 ;; Default theme
