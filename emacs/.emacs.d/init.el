@@ -57,4 +57,7 @@ the `package-archives' variable."
 
 (require 'jl-emacs-keybindings)
 
+;; Load my project modules.
+(require 'sailamx)
+
 ;;; init.el ends here
