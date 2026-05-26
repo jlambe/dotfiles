@@ -30,6 +30,9 @@
 ;;; Comment/uncomment region
 (keymap-global-set "C-S-c" 'comment-or-uncomment-region)
 
+;;; Duplicate
+(keymap-global-set "C-c C-d" 'duplicate-dwim)
+
 ;;; Vterm
 (keymap-global-set "C-x C-t" 'vterm)
 
@@ -60,6 +63,7 @@
 
 ;;; Xref
 (keymap-global-set "C-, ," 'xref-go-back)
+(keymap-global-set "C-, C-," 'xref-go-back)
 (keymap-global-set "C-, d" 'xref-find-definitions)
 (keymap-global-set "C-, 4 d" 'xref-find-definitions-other-window)
 (keymap-global-set "C-, r" 'xref-find-references)
