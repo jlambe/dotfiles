@@ -11,9 +11,6 @@
 (defvar jl-default-font-family "DejaVuSansM Nerd Font Mono"
   "Default font family name.")
 
-(defvar jl-default-font-size 15
-  "Default font size.")
-
 (defvar jl-default-theme 'ef-light
   "Default theme to load.
 Currently only supporting ef-themes.")
@@ -25,7 +22,7 @@ Currently only supporting ef-themes.")
   ;;; This is setting the default font for all new graphical frames.
   ;;; Follows the Fontconfig pattern.
   ;;; See Emacs > Fonts documentation for details.
-  (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-15"))
+  (add-to-list 'default-frame-alist '(font . "DejaVuSansM Nerd Font Mono-14"))
   )
 
 ;; Default theme
