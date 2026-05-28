@@ -87,7 +87,7 @@
   (setq-default electric-indent-inhibit t)
   (setq tab-width 4
         indent-tabs-mode nil
-        indent-line-function 'insert-tab)
+        indent-line-function 'indent-relative)
   :custom
   ;; Only highlight on current/active buffer.
   (hl-line-sticky-flag nil)
