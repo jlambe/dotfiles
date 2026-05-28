@@ -11,7 +11,7 @@
 (defvar jl-default-font-family "DejaVuSansM Nerd Font Mono"
   "Default font family name.")
 
-(defvar jl-default-theme 'ef-light
+(defvar jl-default-theme 'ef-cyprus
   "Default theme to load.
 Currently only supporting ef-themes.")
 
@@ -35,6 +35,8 @@ Currently only supporting ef-themes.")
   ;; Load the default theme.
   (modus-themes-load-theme jl-default-theme))
 
+;; The following packages are responsible to display font icons in different
+;; areas of Emacs.
 (use-package nerd-icons
   :ensure t
   :custom
@@ -76,6 +78,7 @@ Currently only supporting ef-themes.")
   (when grep-use-headings
     (nerd-icons-grep-mode 1)))
 
+;; Display a background color that matches a color value in code.
 (use-package rainbow-mode
   :ensure t
   :config
