@@ -36,6 +36,9 @@
 ;;; Vterm
 (keymap-global-set "C-x C-t" 'vterm)
 
+;;; Window
+(keymap-global-set "<f8>" 'window-toggle-side-windows)
+
 ;;; Windmove
 ;;; Select window on the right
 (keymap-global-set "C-S-l" 'windmove-right)
