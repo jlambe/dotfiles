@@ -91,6 +91,11 @@
 (keymap-global-set "C-, a" 'embark-act)
 (keymap-global-set "C-, e" 'embark-dwim)
 
+;;; Magit
+;;; Additional binding to access magit status
+;;; as I often keep the Ctrl key pressed while typing.
+(keymap-global-set "C-x C-g" 'magit-status)
+
 (provide 'jl-emacs-keybindings)
 
 ;;; jl-emacs-keybindings.el ends here
