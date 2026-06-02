@@ -26,12 +26,10 @@
 
 ;;; Text manipulation
 (keymap-global-set "C-S-d" 'duplicate-dwim)
+(keymap-global-set "C-c C-d" 'duplicate-dwim)
 
 ;;; Comment/uncomment region
 (keymap-global-set "C-S-c" 'comment-or-uncomment-region)
-
-;;; Duplicate
-(keymap-global-set "C-c C-d" 'duplicate-dwim)
 
 ;;; Vterm
 (keymap-global-set "C-x C-t" 'vterm)
