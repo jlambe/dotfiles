@@ -90,7 +90,6 @@
 (keymap-global-set "C-, e" 'embark-dwim)
 
 ;;; Magit
-(keymap-global-set "C-x C-g" 'magit-status)
 (keymap-global-set "C-x g" 'magit-status)
 
 (provide 'jl-emacs-keybindings)

@@ -4,7 +4,7 @@ return {
         dependencies = { 'nvim-tree/nvim-web-devicons' },
         opts = {
             options = {
-                theme = 'catppuccin'
+                theme = 'catppuccin-latte'
             },
             sections = {
                 lualine_x = {

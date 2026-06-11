@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(pnpm:*)",
+      "Bash(php:*)",
+      "Bash(cd:*)",
+      "Bash(gh pr:*)",
+      "Read(/tmp*)",
+      "mcp__solo"
+    ],
+    "deny": [
+      "Bash"
+    ],
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $HOME/.claude/hooks/gitnexus/gitnexus-hook.cjs",
+            "timeout": 10,
+            "statusMessage": "Enriching with GitNexus graph context..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node $HOME/.claude/hooks/gitnexus/gitnexus-hook.cjs",
+            "timeout": 10,
+            "statusMessage": "Checking GitNexus index freshness..."
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "php-lsp@claude-plugins-official": true
+  },
+  "theme": "light",
+  "skipDangerousModePermissionPrompt": true
+}
