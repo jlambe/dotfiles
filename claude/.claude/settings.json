@@ -11,6 +11,8 @@
       "Bash(cd:*)",
       "Bash(gh pr:*)",
       "Bash(cat:*)",
+      "Bash(tee:*)",
+      "Bash(grep:*)",
       "Read(/tmp*)",
       "mcp__solo"
     ],
