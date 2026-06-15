@@ -85,9 +85,9 @@
   :config
   ;; Default indentation configuration.
   (setq-default electric-indent-inhibit t)
-  (setq tab-width 4
-        indent-tabs-mode nil
-        indent-line-function 'indent-relative)
+  (setq-default tab-width 4
+		        indent-tabs-mode nil
+		        indent-line-function 'indent-relative)
   :custom
   ;; Only highlight on current/active buffer.
   (hl-line-sticky-flag nil)
@@ -99,7 +99,9 @@
    (prog-mode . electric-pair-mode)
    ;; C mode default indentation.
    (c-mode . (lambda ()
-	       (setq tab-width 4)))
+	       (setq-local indent-tabs-mode t
+	                   tab-width 4
+	                   c-basic-offset 4)))
    ;; While programming...
    (prog-mode . (lambda ()
 		  ;; Display absolute file name of current buffer in the frame title bar.

@@ -23,6 +23,12 @@
   :custom
   (display-buffer-alist
    `(
+     ;; Embark Export
+     ("\\*Embark Export.+\\*"
+      (display-buffer-in-side-window)
+      (side . bottom)
+      (slot . -1))
+
      ;; Always hide the Async Shell Command standard output buffer by default
      ("\\*Async Shell Command\\*" (display-buffer-no-window))
 
