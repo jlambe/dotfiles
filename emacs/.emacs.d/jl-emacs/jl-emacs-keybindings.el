@@ -92,6 +92,21 @@
 ;;; Magit
 (keymap-global-set "C-x g" 'magit-status)
 
+;;; C Projects
+;; NOTE(julien)
+;; Functions for keybinding usage must have the (interactive) declaration.
+(defun jl-c-compile-build ()
+  "Utility to run the project build.sh script."
+  (interactive)
+  (compile "./build.sh" t))
+
+(use-package c-ts-mode
+  :ensure t
+  :config
+  (keymap-set c-ts-mode-map "C-c C-b" 'jl-c-compile-build))
+
+(keymap-set c-mode-map "C-c C-b" 'jl-c-compile-build)
+
 (provide 'jl-emacs-keybindings)
 
 ;;; jl-emacs-keybindings.el ends here

@@ -25,6 +25,8 @@
   	(c . ("https://github.com/tree-sitter/tree-sitter-c"))
   	(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
   	(yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))))
+  ;; Set files ending with .inc extension to use ASM-MODE
+  (add-to-list 'auto-mode-alist '("\\.inc\\'" . asm-mode))
   :mode
   ;; Specify file extension patterns and which "tree-sitter" mode to use for each.
   (
