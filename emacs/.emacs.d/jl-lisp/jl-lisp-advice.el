@@ -17,6 +17,9 @@ Sets its COMINT argument to t in order to run interactively."
   (let ((command (car args)))
     (apply function (list command t))))
 
+;; Enhance copy/cut commands to automatically copy/cut current line if no region selected
+;; https://github.com/fniessen/emacs-leuven/blob/master/docs/emacs-leuven.txt#deletion-and-killing
+
 (provide 'jl-lisp-advice)
 
 ;;; jl-lisp-advice.el ends here

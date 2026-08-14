@@ -101,11 +101,9 @@ Use this as the `body-function' in a `display-buffer-alist' entry."
 
      ;; Display vterm to its own tab.
      ("\\*vterm\\*"
-      (display-buffer-in-side-window)
-      (side . bottom)
-      (window-height . 0.33)
-      (slot . -2)
-      (reusable-frames . :just-the-selected-frame))
+      (display-buffer-pop-up-window)
+      (reusable-frames . :just-the-selected-frame)
+      (body-function . jl-window-select-fit-size))
 
      ;; Display SQL: MySQL in current frame using new tab.
      ("\\*SQL: MySQL\\*"

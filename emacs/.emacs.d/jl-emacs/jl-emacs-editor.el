@@ -38,6 +38,9 @@
   ;;; Disable backup if under version control.
   (setq vc-make-backup-files nil)
 
+  ;;; Enable upgrade built-in packages
+  (setq package-install-upgrade-built-in t)
+
   ;; MacOS
   ;;; Change meta key modifier support on macos.
   ;;; Set meta key on the right option keyboard key and disable the default left
