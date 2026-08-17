@@ -96,6 +96,10 @@
 
   ;; Advice the `compile' command to work in interactive mode by default.
   (advice-add #'compile :around #'jl-advice-compile-interactive)
+
+  ;; Advice the `kill-region' command if called interactively.
+  ;; Kill the region if region is active or kill the current line by default.
+  (advice-add #'kill-region :around #'jl-advice-slick-kill-region)
   :custom
   ;; Enable indentation+completion using TAB key
   (tab-always-indent 'complete)
