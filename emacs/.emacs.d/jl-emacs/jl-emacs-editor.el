@@ -100,6 +100,11 @@
   ;; Advice the `kill-region' command if called interactively.
   ;; Kill the region if region is active or kill the current line by default.
   (advice-add #'kill-region :around #'jl-advice-slick-kill-region)
+
+  ;; Advice the `kill-ring-save' command if called interactively.
+  ;; Copy the region if region is active or copy the current line by default.
+  (advice-add #'kill-ring-save :around #'jl-advice-slick-kill-ring-save)
+
   :custom
   ;; Enable indentation+completion using TAB key
   (tab-always-indent 'complete)

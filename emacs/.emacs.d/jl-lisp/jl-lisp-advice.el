@@ -17,18 +17,34 @@ Sets its COMINT argument to t in order to run interactively."
   (let ((command (car args)))
     (apply function (list command t))))
 
-;; Enhance copy/cut commands to automatically copy/cut current line if no region selected
+;; Enhance copy/cut commands to automatically copy/cut current line if no region selected.
+;; Original script from fniessen:
 ;; https://github.com/fniessen/emacs-leuven/blob/master/docs/emacs-leuven.txt#deletion-and-killing
 ;; Enhance the kill-region command to either cut selected region or default to current line.
 (defun jl-advice-slick-kill-region (function beg end &rest args)
   "Advice FUNCTION for the `kill-region' command using BEG, END and ARGS.
-Cut the selected region or current line if no region is active and called interactively."
+Cut the selected region or the current line if no region is active and called interactively."
   (interactive (if (and (use-region-p) (mark t))
                    ;; Return the function arguments to cut active region
                    (list (region-beginning) (region-end))
-                 ;; Return the function arguments to cut current line
+                 ;; Return the function arguments to cut the current line
                  (list (line-beginning-position) (line-beginning-position 2))))
+  (when (not (use-region-p))
+    (message "[Cut the current line]"))
   ;; Let's just call the original function with new arguments from interactive.
+  (apply function beg end args))
+
+(defun jl-advice-slick-kill-ring-save (function beg end &rest args)
+  "Advice FUNCTION for the `kill-ring-save' command using BEG, END and ARGS.
+Copy the selected region or the current line if no region is active and called interactively."
+  (interactive (if (and (use-region-p) (mark t))
+                   ;; Return the function arguments to copy active region
+                   (list (region-beginning) (region-end))
+                 ;; Return the function arguments to copy the current line
+                 (list (line-beginning-position) (line-beginning-position 2))))
+  (when (not (use-region-p))
+    (message "[Copy the current line]"))
+  ;; Let's just call the orginial function with new arguments from interactive.
   (apply function beg end args))
 
 (provide 'jl-lisp-advice)
