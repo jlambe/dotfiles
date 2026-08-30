@@ -17,6 +17,25 @@
   (setq completion-preview-minimum-symbol-length 2)
   (global-completion-preview-mode 1))
 
+(use-package minibuffer
+  :ensure nil
+  :config
+  ;; Do not print messages in the echo area that partein to completion.
+  (setq completion-show-inline-help nil)
+
+  ;; Show usefule annotations in various minibuffer prompts.
+  (setq completions-detailed t)
+
+  ;; Display as a single column, easier to read.
+  (setq completions-format 'one-column)
+
+  ;; Rely on previous inputs to surface candidates towards the top of the list
+  ;; (enable built-in `savehist-mode' to persist history).
+  (setq completions-sort 'historical)
+
+  ;; Show the completions buffer when I hit TAB but there is not unique match yet.
+  (setq completion-auto-help t))
+
 ;;; Orderless
 ;;; The [orderless] package provides enhanced fuzzy search during
 ;;; completion. The current configuration here is putting the "orderless"
