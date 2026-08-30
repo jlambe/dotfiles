@@ -55,6 +55,11 @@
 (keymap-set flymake-mode-map "M-n" 'flymake-goto-next-error)
 (keymap-set flymake-mode-map "M-p" 'flymake-goto-prev-error)
 
+;;; Completion preview
+;;; Requires Emacs 31
+(keymap-set completion-preview-active-mode-map "M-n" 'completion-preview-next-candidate)
+(keymap-set completion-preview-active-mode-map "M-p" 'completion-preview-prev-candidate)
+
 ;;; Eglot
 (keymap-global-set "C-, D" 'eglot-find-declaration)
 (keymap-global-set "C-, i" 'eglot-find-implementation)

@@ -67,6 +67,9 @@ If universal ARG is set, the absolute path of the buffer file is used."
   (interactive)
   (kill-new (buffer-name)))
 
+;; Apply macro to each paragraph lines
+;; https://www.youtube.com/live/M7-dJb2GTN4?si=HW8ldvrrTjW-rn0P&t=920
+
 (provide 'jl-lisp-utilities)
 
 ;;; jl-lisp-utilities.el ends here

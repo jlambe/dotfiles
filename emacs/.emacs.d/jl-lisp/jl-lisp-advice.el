@@ -29,8 +29,6 @@ Cut the selected region or the current line if no region is active and called in
                    (list (region-beginning) (region-end))
                  ;; Return the function arguments to cut the current line
                  (list (line-beginning-position) (line-beginning-position 2))))
-  (when (not (use-region-p))
-    (message "[Cut the current line]"))
   ;; Let's just call the original function with new arguments from interactive.
   (apply function beg end args))
 
@@ -42,10 +40,11 @@ Copy the selected region or the current line if no region is active and called i
                    (list (region-beginning) (region-end))
                  ;; Return the function arguments to copy the current line
                  (list (line-beginning-position) (line-beginning-position 2))))
-  (when (not (use-region-p))
-    (message "[Copy the current line]"))
   ;; Let's just call the orginial function with new arguments from interactive.
   (apply function beg end args))
+
+;; Group undo edits when modifying buffers with keyboard macros.
+;; https://www.youtube.com/live/M7-dJb2GTN4?si=ta1spmehT_P2Pqel&t=628
 
 (provide 'jl-lisp-advice)
 

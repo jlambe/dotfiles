@@ -11,7 +11,7 @@
 (defvar jl-default-font-family "DejaVuSansM Nerd Font Mono"
   "Default font family name.")
 
-(defvar jl-default-theme 'ef-cyprus
+(defvar jl-default-theme 'ef-light
   "Default theme to load.
 Currently only supporting ef-themes.")
 

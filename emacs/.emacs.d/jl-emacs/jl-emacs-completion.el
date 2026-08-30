@@ -8,6 +8,15 @@
 
 ;;; Code:
 
+;; Emacs 31 completion-preview
+;; https://protesilaos.com/codelog/2026-08-29-emacs-completion-preview-mode/
+(use-package completion-preview
+  :ensure nil
+  :demand t
+  :config
+  (setq completion-preview-minimum-symbol-length 2)
+  (global-completion-preview-mode 1))
+
 ;;; Orderless
 ;;; The [orderless] package provides enhanced fuzzy search during
 ;;; completion. The current configuration here is putting the "orderless"
