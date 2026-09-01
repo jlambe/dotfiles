@@ -9,6 +9,9 @@
 ;;; Code:
 
 ;; Global keybindings
+;; Scratch'n draft
+(keymap-global-set "C-c d" 'scratch-buffer)
+
 ;;; Undo and redo
 (keymap-global-set "C-z" 'undo)
 (keymap-global-set "C-S-z" 'undo-redo)
