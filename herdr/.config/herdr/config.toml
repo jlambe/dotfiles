@@ -1,0 +1,28 @@
+onboarding = false
+
+[theme]
+name = "catppuccin-latte"
+auto_switch = false
+
+[ui]
+agent_panel_sort = "spaces"
+
+[terminal]
+new_cwd = "follow"
+
+[worktrees]
+directory = "/Volumes/Materia/dev/sail-amx-worktrees"
+
+[keys]
+prefix = "ctrl+,"
+next_tab = ["prefix+n", "ctrl+right"]
+previous_tab = ["prefix+p", "ctrl+left"]
+focus_pane_left = ["prefix+h", "ctrl+shift+h"]
+focus_pane_down = ["prefix+j", "ctrl+shift+j"]
+focus_pane_up = ["prefix+k", "ctrl+shift+k"]
+focus_pane_right = ["prefix+l", "ctrl+shift+l"]
+
+
+
+
+
