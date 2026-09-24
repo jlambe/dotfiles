@@ -18,8 +18,9 @@ If APPEND is t, each path is appended to the `load-path' global variable."
   (when (listp paths)
     (dolist (path paths)
       (if (file-name-absolute-p path)
-	  (add-to-list 'load-path (directory-file-name path) append)
-	(add-to-list 'load-path (locate-user-emacs-file path) append)))))
+          (when (file-exists-p path)
+            (add-to-list 'load-path (directory-file-name path) append))
+	    (add-to-list 'load-path (locate-user-emacs-file path) append)))))
 
 (defun jl-emacs-add-packages (packages &optional append)
   "Register PACKAGES to the `package-archives'.
@@ -33,6 +34,7 @@ the `package-archives' variable."
       (add-to-list 'package-archives package append))))
 
 ;;; Configuration starts here
+(package-initialize)
 
 ;; Add "jl-lisp" and "jl-emacs" directories to load path.
 ;; The lisp directory contains additional lisp functions to help me manage my
