@@ -13,6 +13,9 @@
 (defconst jl-system-macos 'darwin
   "Variable `system-type' symbol for macos.")
 
+(defconst jl-system-linux 'gnu/linux
+  "Variable `system-type' symbol for gnu/linux.")
+
 (defconst jl-window-system-macos 'ns
   "Variable `window-system' symbol for macos.")
 
@@ -22,6 +25,10 @@
 (defun jl-macos-p ()
   "Predicate function that return t if system is darwin/macos."
   (eq system-type jl-system-macos))
+
+(defun jl-gnu-linux-p ()
+  "Predicate function that return t if system is gnu/linux."
+  (eq system-type jl-system-linux))
 
 (defun jl-emacs-directory-load-path-when (condition paths &optional append)
   "Utility function to conditionally add load paths.

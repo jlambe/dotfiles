@@ -106,7 +106,11 @@
 (defun jl-c-compile-build ()
   "Utility to run the project build.sh script."
   (interactive)
-  (compile "./build.sh" t))
+  (let* ((project (project-current t))
+         (build-path (concat (project-root project) "build.sh")))
+    (when project
+      (cd (project-root project)))
+    (compile build-path t)))
 
 (use-package c-ts-mode
   :ensure t
